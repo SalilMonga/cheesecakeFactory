@@ -1,86 +1,86 @@
 [
   {
     "id": 1,
-    "name": "Finish MVP prototype",
+    "name": "Prepare MVP prototype demo slides",
     "priority": "high",
-    "timeline": "2025-03-01",
+    "timeline": "2025-02-22",
     "completed": false
   },
   {
     "id": 2,
-    "name": "User testing session",
+    "name": "Conduct user testing session",
     "priority": "medium",
-    "timeline": "2025-03-05",
+    "timeline": "2025-02-25",
     "completed": false
   },
   {
     "id": 3,
-    "name": "Deploy update",
+    "name": "Deploy latest software update",
     "priority": "low",
-    "timeline": "2025-03-10",
+    "timeline": "2025-02-28",
     "completed": false
   },
   {
     "id": 4,
-    "name": "without complete usually goose",
+    "name": "Finalize product design revisions",
     "priority": "high",
-    "timeline": "2025-03-01",
+    "timeline": "2025-02-22",
     "completed": false
   },
   {
     "id": 5,
-    "name": "sign smell",
+    "name": "Review analytics reports",
     "priority": "medium",
-    "timeline": "2025-03-05",
+    "timeline": "2025-02-25",
     "completed": false
   },
   {
     "id": 6,
-    "name": "remember off me cut package gray men yesterday",
+    "name": "Update project documentation",
     "priority": "low",
-    "timeline": "2025-03-10",
+    "timeline": "2025-02-28",
     "completed": false
   },
   {
     "id": 7,
-    "name": "strip bean think say circle identity",
+    "name": "Meet with design team for feedback",
     "priority": "high",
-    "timeline": "2025-03-01",
+    "timeline": "2025-02-22",
     "completed": false
   },
   {
     "id": 8,
-    "name": "castle some aboard along shown tax bill former many also sea construction",
+    "name": "Plan upcoming marketing campaign",
     "priority": "medium",
-    "timeline": "2025-03-05",
+    "timeline": "2025-02-25",
     "completed": false
   },
   {
     "id": 9,
-    "name": "bound six sister",
+    "name": "Backup and archive old data",
     "priority": "low",
-    "timeline": "2025-03-10",
+    "timeline": "2025-02-28",
     "completed": false
   },
   {
     "id": 10,
-    "name": "view mice wide charge thread hole nature laid animal six",
+    "name": "Organize team stand-up meeting",
     "priority": "high",
-    "timeline": "2025-03-01",
+    "timeline": "2025-02-22",
     "completed": false
   },
   {
     "id": 11,
-    "name": "tape conversation eager",
+    "name": "Coordinate client follow-up calls",
     "priority": "medium",
-    "timeline": "2025-03-05",
+    "timeline": "2025-02-25",
     "completed": false
   },
   {
     "id": 12,
-    "name": "dried gave gravity",
+    "name": "Conduct system maintenance review",
     "priority": "low",
-    "timeline": "2025-03-10",
+    "timeline": "2025-02-28",
     "completed": false
   }
 ]

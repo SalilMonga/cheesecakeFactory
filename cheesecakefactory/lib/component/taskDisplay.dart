@@ -36,6 +36,7 @@ Future<List<Task>> loadTasks() async {
   return jsonResponse.map((task) => Task.fromJson(task)).toList();
 }
 
+// Enum to toggle between grouping modes.
 enum GroupMode { priority, date }
 
 GroupMode _currentGroupMode = GroupMode.priority;
@@ -96,10 +97,10 @@ class _TaskListPageState extends State<TaskListPage> {
         grouped['Low']!.add(task);
       }
     }
-
     return grouped;
   }
 
+  // Group tasks by date range (Today, This Week, This Month).
   Map<String, List<Task>> _groupTasksByDateRange(List<Task> tasks) {
     final Map<String, List<Task>> grouped = {
       'Today': [],
@@ -127,7 +128,6 @@ class _TaskListPageState extends State<TaskListPage> {
         grouped['This Month']!.add(task);
       }
     }
-
     return grouped;
   }
 
@@ -135,8 +135,9 @@ class _TaskListPageState extends State<TaskListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Today'),
+        title: const Text('Tasks Lists'),
         actions: [
+          // Toggle button to switch between grouping modes.
           IconButton(
             icon: const Icon(Icons.filter_list),
             onPressed: () {
@@ -162,51 +163,80 @@ class _TaskListPageState extends State<TaskListPage> {
             );
           } else if (snapshot.hasData) {
             final tasks = snapshot.data!;
-            final groupedTasks = _groupTasksByPriority(tasks);
+            // Choose the grouping method based on the current mode.
+            final groupedTasks = _currentGroupMode == GroupMode.priority
+                ? _groupTasksByPriority(tasks)
+                : _groupTasksByDateRange(tasks);
+
+            // Define the order in which groups should appear.
+            final List<String> groupOrder =
+                _currentGroupMode == GroupMode.priority
+                    ? ['High', 'Medium', 'Low']
+                    : ['Today', 'This Week', 'This Month'];
 
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Build a section for each priority group
-                  _buildPrioritySection(
-                    context,
-                    priorityLabel: 'High',
-                    tasks: groupedTasks['High']!,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildPrioritySection(
-                    context,
-                    priorityLabel: 'Medium',
-                    tasks: groupedTasks['Medium']!,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildPrioritySection(
-                    context,
-                    priorityLabel: 'Low',
-                    tasks: groupedTasks['Low']!,
-                  ),
-                ],
+                children: groupOrder.map((groupKey) {
+                  return Column(
+                    children: [
+                      _buildSection(
+                        context,
+                        sectionTitle: groupKey,
+                        tasks: groupedTasks[groupKey]!,
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                }).toList(),
               ),
             );
           }
-          // If there's no data and no error, show an empty container
+          // If there's no data and no error, show an empty container.
           return const SizedBox();
         },
       ),
     );
   }
 
-  Widget _buildPrioritySection(
+  TextStyle getTaskTextStyle(Task task, String sectionTitle, GroupMode mode) {
+    // Apply different styles based on the grouping mode and section title.
+    if (mode == GroupMode.priority) {
+      return TextStyle(
+        decoration: task.completed ? TextDecoration.lineThrough : null,
+        fontWeight: sectionTitle.toLowerCase() == 'high'
+            ? FontWeight.bold
+            : FontWeight.normal,
+        color: sectionTitle.toLowerCase() == 'high'
+            ? Colors.red[400]
+            : sectionTitle.toLowerCase() == 'medium'
+                ? Colors.purple[200]
+                : Colors.blue[200],
+      );
+    } else {
+      // For date grouping, customize colors as desired.
+      return TextStyle(
+        decoration: task.completed ? TextDecoration.lineThrough : null,
+        fontWeight: sectionTitle.toLowerCase() == 'today'
+            ? FontWeight.bold
+            : FontWeight.normal,
+        color: sectionTitle.toLowerCase() == 'today'
+            ? Colors.green[400]
+            : sectionTitle.toLowerCase() == 'this week'
+                ? Colors.orange[400]
+                : Colors.blueGrey,
+      );
+    }
+  }
+
+  // Generic section builder that works for both grouping modes.
+  Widget _buildSection(
     BuildContext context, {
-    required String priorityLabel,
+    required String sectionTitle,
     required List<Task> tasks,
   }) {
-    // If there are no tasks in this priority, don't render a section at all.
-    if (tasks.isEmpty) {
-      return const SizedBox();
-    }
+    if (tasks.isEmpty) return const SizedBox();
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -216,22 +246,21 @@ class _TaskListPageState extends State<TaskListPage> {
         tilePadding: EdgeInsets.zero,
         childrenPadding: EdgeInsets.zero,
         title: Text(
-          '$priorityLabel Priority (${tasks.length})',
+          '$sectionTitle (${tasks.length})',
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        initiallyExpanded: priorityLabel.toLowerCase() == 'high',
+        // Expand High priority or Today by default.
+        initiallyExpanded: sectionTitle.toLowerCase() == 'high' ||
+            sectionTitle.toLowerCase() == 'today',
         children: tasks.map((task) {
           return ListTile(
             contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
             horizontalTitleGap: 2.0,
             minVerticalPadding: 0.0,
             leading: Checkbox(
-              //if we need more control over spacing
-              // visualDensity:
-              //     const VisualDensity(horizontal: 2.0, vertical: -4.0),
               checkColor: Colors.white,
               value: task.completed,
               onChanged: (_) => toggleTask(task),
@@ -239,17 +268,7 @@ class _TaskListPageState extends State<TaskListPage> {
             ),
             title: Text(
               task.name,
-              style: TextStyle(
-                  decoration:
-                      task.completed ? TextDecoration.lineThrough : null,
-                  fontWeight: priorityLabel.toLowerCase() == 'high'
-                      ? FontWeight.bold
-                      : FontWeight.normal,
-                  color: priorityLabel.toLowerCase() == 'high'
-                      ? Colors.red[400]
-                      : priorityLabel.toLowerCase() == 'medium'
-                          ? Colors.purple[200]
-                          : Colors.blue[200]),
+              style: getTaskTextStyle(task, sectionTitle, _currentGroupMode),
             ),
             subtitle: task.timeline.isNotEmpty
                 ? Row(
