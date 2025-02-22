@@ -36,6 +36,10 @@ Future<List<Task>> loadTasks() async {
   return jsonResponse.map((task) => Task.fromJson(task)).toList();
 }
 
+enum GroupMode { priority, date }
+
+GroupMode _currentGroupMode = GroupMode.priority;
+
 class TaskDisplayPage extends StatelessWidget {
   const TaskDisplayPage({super.key});
 
@@ -96,10 +100,55 @@ class _TaskListPageState extends State<TaskListPage> {
     return grouped;
   }
 
+  Map<String, List<Task>> _groupTasksByDateRange(List<Task> tasks) {
+    final Map<String, List<Task>> grouped = {
+      'Today': [],
+      'This Week': [],
+      'This Month': [],
+    };
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final endOfToday = today.add(const Duration(days: 1));
+    final endOfWeek = today.add(const Duration(days: 7));
+    final endOfMonth =
+        DateTime(now.year, now.month + 1, 1).subtract(const Duration(days: 1));
+
+    for (var task in tasks) {
+      // Parse the task.timeline to a DateTime (assuming "2025-03-01" format)
+      final taskDate = DateTime.tryParse(task.timeline);
+      if (taskDate == null) continue;
+
+      if (taskDate.isBefore(endOfToday)) {
+        grouped['Today']!.add(task);
+      } else if (taskDate.isBefore(endOfWeek)) {
+        grouped['This Week']!.add(task);
+      } else if (taskDate.isBefore(endOfMonth)) {
+        grouped['This Month']!.add(task);
+      }
+    }
+
+    return grouped;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Today')),
+      appBar: AppBar(
+        title: const Text('Today'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: () {
+              setState(() {
+                _currentGroupMode = _currentGroupMode == GroupMode.priority
+                    ? GroupMode.date
+                    : GroupMode.priority;
+              });
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<List<Task>>(
         future: futureTasks,
         builder: (context, snapshot) {
@@ -120,13 +169,6 @@ class _TaskListPageState extends State<TaskListPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Title (optional)
-                  // Text(
-                  //   'My Tasks',
-                  //   style: Theme.of(context).textTheme.headline5,
-                  // ),
-                  // const SizedBox(height: 16),
-
                   // Build a section for each priority group
                   _buildPrioritySection(
                     context,
@@ -166,25 +208,34 @@ class _TaskListPageState extends State<TaskListPage> {
       return const SizedBox();
     }
 
-    return ExpansionTile(
-      title: Text(
-        '$priorityLabel Priority (${tasks.length})',
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        dividerColor: Colors.transparent,
       ),
-      children: tasks.map((task) {
-        return Card(
-          margin: const EdgeInsets.symmetric(vertical: 4.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
+      child: ExpansionTile(
+        tilePadding: EdgeInsets.zero,
+        childrenPadding: EdgeInsets.zero,
+        title: Text(
+          '$priorityLabel Priority (${tasks.length})',
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
-          child: ListTile(
+        ),
+        initiallyExpanded: priorityLabel.toLowerCase() == 'high',
+        children: tasks.map((task) {
+          return ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+            horizontalTitleGap: 2.0,
+            minVerticalPadding: 0.0,
             leading: Checkbox(
-              shape: const CircleBorder(),
+              //if we need more control over spacing
+              // visualDensity:
+              //     const VisualDensity(horizontal: 2.0, vertical: -4.0),
+              checkColor: Colors.white,
               value: task.completed,
               onChanged: (_) => toggleTask(task),
+              activeColor: Colors.grey[350],
             ),
             title: Text(
               task.name,
@@ -195,7 +246,7 @@ class _TaskListPageState extends State<TaskListPage> {
                       ? FontWeight.bold
                       : FontWeight.normal,
                   color: priorityLabel.toLowerCase() == 'high'
-                      ? Colors.red[200]
+                      ? Colors.red[400]
                       : priorityLabel.toLowerCase() == 'medium'
                           ? Colors.purple[200]
                           : Colors.blue[200]),
@@ -213,9 +264,9 @@ class _TaskListPageState extends State<TaskListPage> {
                     ],
                   )
                 : null,
-          ),
-        );
-      }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 }
