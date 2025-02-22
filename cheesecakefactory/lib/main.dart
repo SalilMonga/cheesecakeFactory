@@ -13,7 +13,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,12 +33,38 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
   // Controllers for each editable field
   TextEditingController _nameController = TextEditingController(text: 'Cheesecake Factory');
   TextEditingController _phoneController = TextEditingController(text: '0123456789');
   TextEditingController _addressController = TextEditingController(text: 'CSUN, Los Angeles');
   TextEditingController _emailController = TextEditingController(text: 'you@gmail.com');
+
+  // Animation controller for the settings icon
+  late AnimationController _animationController;
+  late Animation<double> _rotationAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize the animation controller
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    // Create a rotation animation (rotate by 360 degrees)
+    _rotationAnimation = Tween<double>(begin: 0, end: 2 * 3.14159).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose(); // Dispose the animation controller
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,13 +114,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             right: 20,
             child: GestureDetector(
               onTap: () {
-                // Add your settings functionality here
+                // Trigger the rotation animation when settings icon is tapped
+                _animationController.forward(from: 0); // Reset and play the animation
                 print('Settings tapped');
               },
-              child: Icon(
-                Icons.settings,
-                size: 30,
-                color: Colors.grey[700],
+              child: AnimatedBuilder(
+                animation: _rotationAnimation,
+                builder: (context, child) {
+                  return Transform.rotate(
+                    angle: _rotationAnimation.value, // Apply rotation
+                    child: child,
+                  );
+                },
+                child: const Icon(
+                  Icons.settings,
+                  size: 30,
+                  color: Colors.grey,
+                ),
               ),
             ),
           ),
