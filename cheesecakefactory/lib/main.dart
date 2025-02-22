@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
-
+import 'package:cheesecakefactory/NavigationBar.dart' as customNavigation;
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 12, 57, 189)),
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -62,6 +61,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _selectedTab = 0; // Track the selected tab index
+
+  void _onTabChange(int index) {
+    setState(() {
+      _selectedTab = index; // Update tab index
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -83,31 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      bottomNavigationBar: GNav(
-        backgroundColor: Colors.black,
-        color: Colors.white,
-        activeColor: Colors.white,
-        tabBackgroundColor: Colors.grey,
-        gap: 8,
-        tabs: const [
-          GButton(
-            icon: Icons.home,
-            text: 'Home',
-          ),
-          GButton(
-            icon: Icons.dashboard_sharp,
-            text: 'Calander',
-            ),
-          GButton(
-            icon: Icons.album,
-            text: 'Focus',
-            ),
-          GButton(
-            icon: Icons.account_circle,
-            text: 'Profile',
-            ),
-        ]
-      ),
+      bottomNavigationBar: customNavigation.NavigationBar(onTabChange: _onTabChange),
 
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
