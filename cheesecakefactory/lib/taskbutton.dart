@@ -26,6 +26,7 @@ class _TaskScreenState extends State<TaskScreen> {
   TextEditingController _controller = TextEditingController();
   stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
+  bool _isInputVisible = false; // To control input visibility
 
   void _addTask() {
     if (_controller.text.isNotEmpty) {
@@ -33,6 +34,9 @@ class _TaskScreenState extends State<TaskScreen> {
         tasks.add(_controller.text);
       });
       _controller.clear();  // Clear the text input field
+      setState(() {
+        _isInputVisible = false; // Hide input field after adding the task
+      });
     }
   }
 
@@ -66,60 +70,130 @@ class _TaskScreenState extends State<TaskScreen> {
     });
   }
 
+  void _cancelInput() {
+    setState(() {
+      _isInputVisible = false; // Hide input field
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Task Manager')),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: tasks.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(child: Text(tasks[index])),
+                          IconButton(
+                            icon: const Icon(Icons.remove_circle, color: Colors.red),
+                            onPressed: () => _deleteTask(index),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          if (_isInputVisible)
+            Center(
+              child: Container(
+                width: 350, // Make the container wider
+                height: 400, // Make the container taller (2x bigger)
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 8,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(child: Text(tasks[index])),
-                      IconButton(
-                        icon: const Icon(Icons.remove_circle, color: Colors.red),
-                        onPressed: () => _deleteTask(index),
+                      Center(
+                        child: Text(
+                          'Create a Task!',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.close, color: Colors.red),
+                            onPressed: _cancelInput,
+                          ),
+                        ],
+                      ),
+                      Expanded( // This will push the mic, text box, and send button to the bottom
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(
+                                    _isListening ? Icons.mic_off : Icons.mic,
+                                    color: Colors.blue,
+                                  ),
+                                  onPressed: _isListening ? _stopListening : _startListening,
+                                ),
+                                Expanded(
+                                  child: TextField(
+                                    controller: _controller,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Type your task here or speak...',
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.send, color: Colors.blue),
+                                  onPressed: _addTask,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                );
-              },
+                ),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    _isListening ? Icons.mic_off : Icons.mic,
-                    color: Colors.blue,
-                  ),
-                  onPressed: _isListening ? _stopListening : _startListening,
-                ),
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Type your task here or speak...',
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.send, color: Colors.blue),
-                  onPressed: _addTask,
-                ),
-              ],
-            ),
-          ),
         ],
       ),
+      floatingActionButton: _isInputVisible
+          ? null // Hide the FAB when input is visible
+          : FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  _isInputVisible = !_isInputVisible; // Toggle the visibility of input
+                });
+              },
+              child: const Icon(Icons.add),
+              backgroundColor: Colors.blue,
+            ),
     );
   }
 }
