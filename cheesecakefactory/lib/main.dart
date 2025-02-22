@@ -40,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 40),
             CircleAvatar(
               radius: 70,
-              backgroundImage: AssetImage('assets/images/user.JPG'),
+              backgroundImage: AssetImage('assets/images/water_pk.png'),
             ),
             const SizedBox(height: 20),
             itemProfile('Name', 'John Dee', CupertinoIcons.person),
