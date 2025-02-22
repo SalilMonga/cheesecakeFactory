@@ -135,18 +135,35 @@ class _TaskListPageState extends State<TaskListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tasks Lists'),
+        title: const Text('Tasks'),
         actions: [
-          // Toggle button to switch between grouping modes.
           IconButton(
-            icon: const Icon(Icons.filter_list),
+            icon: Icon(
+              Icons.priority_high,
+              color: _currentGroupMode == GroupMode.priority
+                  ? Colors.blue // Active color
+                  : Colors.grey, // Inactive color
+            ),
             onPressed: () {
               setState(() {
-                _currentGroupMode = _currentGroupMode == GroupMode.priority
-                    ? GroupMode.date
-                    : GroupMode.priority;
+                _currentGroupMode = GroupMode.priority;
               });
             },
+            tooltip: 'Group by Priority',
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.calendar_today,
+              color: _currentGroupMode == GroupMode.date
+                  ? Colors.blue
+                  : Colors.grey,
+            ),
+            onPressed: () {
+              setState(() {
+                _currentGroupMode = GroupMode.date;
+              });
+            },
+            tooltip: 'Group by Date',
           ),
         ],
       ),
@@ -175,7 +192,12 @@ class _TaskListPageState extends State<TaskListPage> {
                     : ['Today', 'This Week', 'This Month'];
 
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.only(
+                top: 2.0, // Smaller top padding
+                left: 16.0,
+                right: 16.0,
+                bottom: 16.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: groupOrder.map((groupKey) {
