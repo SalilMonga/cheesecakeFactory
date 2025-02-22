@@ -45,7 +45,7 @@ Widget build(BuildContext context) {
                 backgroundImage: AssetImage('assets/images/water_pk.png'),
               ),
               const SizedBox(height: 20),
-              itemProfile('Name', 'John D', CupertinoIcons.person),
+              itemProfile('Name', 'Cheesecake Factory', CupertinoIcons.person),
               const SizedBox(height: 10),
               itemProfile('Phone', '0123456789', CupertinoIcons.phone),
               const SizedBox(height: 10),
