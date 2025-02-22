@@ -64,6 +64,23 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
+     Positioned(
+      top: 40,
+      right: 20,
+      child: GestureDetector(
+        onTap: () {
+          // Add your settings functionality here
+          print('Settings tapped');
+        },
+        child: Icon(
+          Icons.settings,
+          size: 30,
+          color: Colors.grey[700],
+        ),
+      ),
+    ),
+  ],
+),
     );
   }
 
