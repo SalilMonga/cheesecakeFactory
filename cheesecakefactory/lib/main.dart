@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.blue,
       ),
       home: const ProfileScreen(),
     );
@@ -95,7 +95,7 @@ Widget build(BuildContext context) {
           boxShadow: [
             BoxShadow(
                 offset: Offset(0, 5),
-                color: Colors.deepOrange.withOpacity(.2),
+                color: Colors.blue.withOpacity(.2),
                 spreadRadius: 2,
                 blurRadius: 10
             )
