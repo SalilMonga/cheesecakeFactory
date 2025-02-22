@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Finish MVP prototype",
+    "priority": "high",
+    "timeline": "2025-03-01",
+    "completed": false
+  },
+  {
+    "id": 2,
+    "name": "User testing session",
+    "priority": "medium",
+    "timeline": "2025-03-05",
+    "completed": false
+  },
+  {
+    "id": 3,
+    "name": "Deploy update",
+    "priority": "low",
+    "timeline": "2025-03-10",
+    "completed": false
+  }
+]
