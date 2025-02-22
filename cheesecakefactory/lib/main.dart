@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +35,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage (title: 'Navigation Bar'),
+
     );
   }
 }
@@ -77,6 +83,32 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      bottomNavigationBar: GNav(
+        backgroundColor: Colors.black,
+        color: Colors.white,
+        activeColor: Colors.white,
+        tabBackgroundColor: Colors.grey,
+        gap: 8,
+        tabs: const [
+          GButton(
+            icon: Icons.home,
+            text: 'Home',
+          ),
+          GButton(
+            icon: Icons.dashboard_sharp,
+            text: 'Calander',
+            ),
+          GButton(
+            icon: Icons.album,
+            text: 'Focus',
+            ),
+          GButton(
+            icon: Icons.account_circle,
+            text: 'Profile',
+            ),
+        ]
+      ),
+
       appBar: AppBar(
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
