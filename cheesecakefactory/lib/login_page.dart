@@ -61,9 +61,18 @@ class _LoginPageState extends State<LoginPage> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.white, // Set background to white
       appBar: AppBar(
-        title: const Text('Garage Finder App'),
-        elevation: 0,
+        backgroundColor: Colors.white, // Set AppBar background to white
+        elevation: 0, // Remove shadow
+        flexibleSpace: Center(
+          child: Image.asset(
+            'assets/logo.png', // Make sure the path is correct
+            height: 100, // Adjust height as needed
+            width: 100, // Adjust width as needed
+            fit: BoxFit.contain, // Ensure the logo fits properly
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: ConstrainedBox(
@@ -126,20 +135,14 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       CircleAvatar(
                         radius: 24,
-                        backgroundColor: Colors.grey,
+                        backgroundColor: Colors.white,
                       ),
                       SizedBox(width: 16),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Welcome back!',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'Login to access the full features',
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                          
+                         
                         ],
                       ),
                     ],
