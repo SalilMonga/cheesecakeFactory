@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 void main() => runApp(TaskApp());
