@@ -122,9 +122,14 @@ class _TaskListPageState extends State<TaskListPage> {
                 child: Text('Error loading tasks: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             final tasks = snapshot.data!;
-            final groupedTasks = _currentGroupMode == GroupMode.priority
-                ? _groupTasksByPriority(tasks)
-                : _groupTasksByDateRange(tasks);
+            final incompleteTasks = tasks.where((t) => !t.completed).toList();
+            final completedTasks = tasks.where((t) => t.completed).toList();
+            final groupedIncomplete = _currentGroupMode == GroupMode.priority
+                ? _groupTasksByPriority(incompleteTasks)
+                : _groupTasksByDateRange(incompleteTasks);
+            // final groupedTasks = _currentGroupMode == GroupMode.priority
+            //     ? _groupTasksByPriority(tasks)
+            //     : _groupTasksByDateRange(tasks);
             final List<String> groupOrder =
                 _currentGroupMode == GroupMode.priority
                     ? ['High', 'Medium', 'Low']
@@ -139,19 +144,30 @@ class _TaskListPageState extends State<TaskListPage> {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: groupOrder.map((groupKey) {
-                  return Column(
-                    children: [
-                      TaskSection(
-                        sectionTitle: groupKey,
-                        tasks: groupedTasks[groupKey]!,
-                        groupMode: _currentGroupMode,
-                        onToggleTask: toggleTask,
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  );
-                }).toList(),
+                children: [
+                  ...groupOrder.map((groupKey) {
+                    return Column(
+                      children: [
+                        TaskSection(
+                          sectionTitle: groupKey,
+                          tasks: groupedIncomplete[groupKey]!,
+                          groupMode: _currentGroupMode,
+                          onToggleTask: toggleTask,
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+                    );
+                  }),
+                  if (completedTasks.isNotEmpty) ...[
+                    const Divider(),
+                    TaskSection(
+                      sectionTitle: 'Completed',
+                      tasks: completedTasks,
+                      groupMode: _currentGroupMode,
+                      onToggleTask: toggleTask,
+                    ),
+                  ],
+                ],
               ),
             );
           }

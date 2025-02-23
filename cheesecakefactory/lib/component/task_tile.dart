@@ -53,7 +53,7 @@ class TaskTile extends StatelessWidget {
         checkColor: Colors.white,
         value: task.completed,
         onChanged: (_) => onToggle(),
-        activeColor: Colors.grey[350],
+        activeColor: Colors.grey[400],
       ),
       title: Text(
         task.name,
