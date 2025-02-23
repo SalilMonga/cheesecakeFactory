@@ -1,9 +1,10 @@
+import 'package:cheesecakefactory/CalenderPage.dart';
 import 'package:cheesecakefactory/FocusPage.dart';
 import 'package:cheesecakefactory/component/task_list_page.dart';
+import 'package:cheesecakefactory/component/task_list_test.dart';
 import 'package:cheesecakefactory/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'CalenderPage.dart';
 
 class NavigationBar extends StatefulWidget {
   const NavigationBar({super.key});
@@ -17,8 +18,8 @@ class _NavigationBarState extends State<NavigationBar> {
 
   final List<Widget> _pages = [
     // MyHomePage(title: 'Home'),
-    const TaskListPage(),
-    const CalenderPage(),
+    const TaskListPageTest(),
+    const MotherlyCalendarApp(),
     const FocusPage(),
     const ProfileScreen(),
     // const ProfilePage(),
