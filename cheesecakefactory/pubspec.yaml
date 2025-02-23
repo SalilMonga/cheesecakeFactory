@@ -23,6 +23,9 @@ dependencies:
   timezone: ^0.10.0
   google_nav_bar: ^5.0.7
   audioplayers: ^5.2.1
+  flutter_secure_storage: ^9.2.4
+  provider: ^6.1.2
+  crypto: ^3.0.6
 
 dev_dependencies:
   flutter_test:

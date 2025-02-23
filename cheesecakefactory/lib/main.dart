@@ -1,5 +1,7 @@
 // import 'package:cheesecakefactory/splash_screen.dart';
-import 'package:cheesecakefactory/task.dart';
+import 'package:cheesecakefactory/component/task_list_page.dart';
+import 'package:cheesecakefactory/login_page.dart';
+import 'package:cheesecakefactory/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'profile.dart';
@@ -21,7 +23,15 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 30, 156, 28)),
         useMaterial3: true,
       ),
-      home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
+      // home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
+      // home: const LoginPage()
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/tasklist': (context) => const customNavBar.NavigationBar(),
+        // '/home': (context) => const HomePage(),
+      },
       // home: Settings(),
     );
   }
