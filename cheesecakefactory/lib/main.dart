@@ -53,7 +53,6 @@ class _ProfileScreenState extends State<ProfileScreen>
     'Email': false,
   };
 
-
   // Animation controller for the settings icon
   late AnimationController _animationController;
   late Animation<double> _rotationAnimation;
@@ -87,40 +86,42 @@ class _ProfileScreenState extends State<ProfileScreen>
         children: [
           Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const SizedBox(height: 40),
-                const CircleAvatar(
-                  radius: 70,
-                  backgroundImage: AssetImage('assets/images/water_pk.png'),
-                ),
-                const SizedBox(height: 20),
-                // Editable Profile Fields
-                _itemProfile('Name', _nameController, CupertinoIcons.person),
-                const SizedBox(height: 10),
-                _itemProfile('Phone', _phoneController, CupertinoIcons.phone),
-                const SizedBox(height: 10),
-                _itemProfile('Address', _addressController, CupertinoIcons.location),
-                const SizedBox(height: 10),
-                _itemProfile('Email', _emailController, CupertinoIcons.mail),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Handle saving logic here, e.g., display saved data
-                      print('Name: ${_nameController.text}');
-                      print('Phone: ${_phoneController.text}');
-                      print('Address: ${_addressController.text}');
-                      print('Email: ${_emailController.text}');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(15),
-                    ),
-                    child: const Text('Save Profile'),
+            child: SingleChildScrollView( // Added SingleChildScrollView here
+              child: Column(
+                children: [
+                  const SizedBox(height: 40),
+                  const CircleAvatar(
+                    radius: 70,
+                    backgroundImage: AssetImage('assets/images/water_pk.png'),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  // Editable Profile Fields
+                  _itemProfile('Name', _nameController, CupertinoIcons.person),
+                  const SizedBox(height: 10),
+                  _itemProfile('Phone', _phoneController, CupertinoIcons.phone),
+                  const SizedBox(height: 10),
+                  _itemProfile('Address', _addressController, CupertinoIcons.location),
+                  const SizedBox(height: 10),
+                  _itemProfile('Email', _emailController, CupertinoIcons.mail),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Handle saving logic here, e.g., display saved data
+                        print('Name: ${_nameController.text}');
+                        print('Phone: ${_phoneController.text}');
+                        print('Address: ${_addressController.text}');
+                        print('Email: ${_emailController.text}');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(15),
+                      ),
+                      child: const Text('Save Profile'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Positioned(
