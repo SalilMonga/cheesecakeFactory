@@ -33,12 +33,26 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
   // Controllers for each editable field
-  TextEditingController _nameController = TextEditingController(text: 'Cheesecake Factory');
-  TextEditingController _phoneController = TextEditingController(text: '0123456789');
-  TextEditingController _addressController = TextEditingController(text: 'CSUN, Los Angeles');
-  TextEditingController _emailController = TextEditingController(text: 'you@gmail.com');
+  final TextEditingController _nameController =
+      TextEditingController(text: 'Cheesecake Factory');
+  final TextEditingController _phoneController =
+      TextEditingController(text: '0123456789');
+  final TextEditingController _addressController =
+      TextEditingController(text: 'CSUN, Los Angeles');
+  final TextEditingController _emailController =
+      TextEditingController(text: 'you@gmail.com');
+
+  // Track editing state for each field
+  final Map<String, bool> _isEditing = {
+    'Name': false,
+    'Phone': false,
+    'Address': false,
+    'Email': false,
+  };
+
 
   // Animation controller for the settings icon
   late AnimationController _animationController;
@@ -76,19 +90,19 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             child: Column(
               children: [
                 const SizedBox(height: 40),
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 70,
                   backgroundImage: AssetImage('assets/images/water_pk.png'),
                 ),
                 const SizedBox(height: 20),
                 // Editable Profile Fields
-                itemProfile('Name', _nameController, CupertinoIcons.person),
+                _itemProfile('Name', _nameController, CupertinoIcons.person),
                 const SizedBox(height: 10),
-                itemProfile('Phone', _phoneController, CupertinoIcons.phone),
+                _itemProfile('Phone', _phoneController, CupertinoIcons.phone),
                 const SizedBox(height: 10),
-                itemProfile('Address', _addressController, CupertinoIcons.location),
+                _itemProfile('Address', _addressController, CupertinoIcons.location),
                 const SizedBox(height: 10),
-                itemProfile('Email', _emailController, CupertinoIcons.mail),
+                _itemProfile('Email', _emailController, CupertinoIcons.mail),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
@@ -139,14 +153,15 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     );
   }
 
-  Widget itemProfile(String title, TextEditingController controller, IconData iconData) {
+  Widget _itemProfile(
+      String title, TextEditingController controller, IconData iconData) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 5),
+            offset: const Offset(0, 5),
             color: Colors.blue.withOpacity(.2),
             spreadRadius: 2,
             blurRadius: 10,
@@ -156,15 +171,36 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
       child: ListTile(
         title: Text(title),
         leading: Icon(iconData),
-        trailing: Icon(Icons.arrow_forward, color: Colors.grey.shade400),
-        tileColor: Colors.white,
-        subtitle: TextField(
-          controller: controller, // Bind the text field to the controller
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Enter your $title',
+        trailing: IconButton(
+          onPressed: () {
+            setState(() {
+              _isEditing[title] = !_isEditing[title]!;
+            });
+          },
+          icon: Icon(
+            _isEditing[title]! ? Icons.check : Icons.edit,
+            color: Colors.grey,
           ),
         ),
+        tileColor: Colors.white,
+        subtitle: _isEditing[title]!
+            ? TextField(
+                controller: controller,
+                autofocus: true, // Automatically focus when editing starts
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.black54),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                ),
+                style: const TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+              )
+            : Text(
+                controller.text,
+                style: const TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+              ),
       ),
     );
   }
