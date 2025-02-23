@@ -36,10 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   confetti: ^0.8.0
   gif: ^2.3.0
-  fluttertoast: ^8.2.12
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   google_nav_bar: ^5.0.7
+  permission_handler: ^11.4.0
 
 dev_dependencies:
   flutter_test:
