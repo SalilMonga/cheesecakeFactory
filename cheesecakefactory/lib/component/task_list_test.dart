@@ -17,10 +17,11 @@ enum GroupMode { priority, date }
 
 class _TaskListPageState extends State<TaskListPageTest> {
   late Future<List<Task>> futureTasks;
+  final ScrollController _scrollController = ScrollController();
   GroupMode _currentGroupMode = GroupMode.priority;
   final Set<int> _pendingCompletion = {};
   late ConfettiController _confettiController;
-
+  double _scrollPosition = 0.0;
   get floatingActionButton => null;
 
   @override
@@ -34,6 +35,9 @@ class _TaskListPageState extends State<TaskListPageTest> {
 
   // Toggle the completed state of a task.
   Future<void> toggleTask(Task task) async {
+    if (_scrollController.hasClients) {
+      _scrollPosition = _scrollController.position.pixels;
+    }
     if (!task.completed && !_pendingCompletion.contains(task.id)) {
       _confettiController.play();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -58,7 +62,12 @@ class _TaskListPageState extends State<TaskListPageTest> {
         task.completed = false;
       });
     }
-    _refreshTasks();
+    await _refreshTasks();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollPosition);
+      }
+    });
   }
 
   Future<void> _refreshTasks() async {
@@ -191,42 +200,6 @@ class _TaskListPageState extends State<TaskListPageTest> {
     );
   }
 
-  // Future<void> _showAddTaskDialog() async {
-  //   final TextEditingController taskController = TextEditingController();
-
-  //   await showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: const Text('Add Task'),
-  //         content: TextField(
-  //           controller: taskController,
-  //           decoration: const InputDecoration(
-  //             hintText: 'Enter task name',
-  //           ),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop(); // Cancel
-  //             },
-  //             child: const Text('Cancel'),
-  //           ),
-  //           ElevatedButton(
-  //             onPressed: () {
-  //               if (taskController.text.trim().isNotEmpty) {
-  //                 _addTask(taskController.text.trim());
-  //               }
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: const Text('Add'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   void dispose() {
     _confettiController.dispose();
@@ -347,6 +320,7 @@ class _TaskListPageState extends State<TaskListPageTest> {
                         : ['Today', 'This Week', 'This Month'];
 
                 return SingleChildScrollView(
+                  controller: _scrollController,
                   padding: const EdgeInsets.only(
                       top: 2.0, left: 16.0, right: 16.0, bottom: 16.0),
                   child: Column(
