@@ -35,7 +35,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
-  // Controllers for each editable field
   final TextEditingController _nameController =
       TextEditingController(text: 'Cheesecake Factory');
   final TextEditingController _phoneController =
@@ -45,7 +44,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   final TextEditingController _emailController =
       TextEditingController(text: 'you@gmail.com');
 
-  // Track editing state for each field
   final Map<String, bool> _isEditing = {
     'Name': false,
     'Phone': false,
@@ -53,21 +51,16 @@ class _ProfileScreenState extends State<ProfileScreen>
     'Email': false,
   };
 
-  // Animation controller for the settings icon
   late AnimationController _animationController;
   late Animation<double> _rotationAnimation;
 
   @override
   void initState() {
     super.initState();
-
-    // Initialize the animation controller
     _animationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-
-    // Create a rotation animation (rotate by 360 degrees)
     _rotationAnimation = Tween<double>(begin: 0, end: 2 * 3.14159).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
@@ -75,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   void dispose() {
-    _animationController.dispose(); // Dispose the animation controller
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -102,7 +95,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                   _itemProfile('Address', _addressController, CupertinoIcons.location),
                   const SizedBox(height: 10),
                   _itemProfile('Email', _emailController, CupertinoIcons.mail),
-                  // Removed Save Profile button
                 ],
               ),
             ),
@@ -154,6 +146,8 @@ class _ProfileScreenState extends State<ProfileScreen>
       child: ListTile(
         title: Text(title),
         leading: Icon(iconData),
+        horizontalTitleGap: 0,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         trailing: IconButton(
           onPressed: () {
             setState(() {
@@ -176,8 +170,12 @@ class _ProfileScreenState extends State<ProfileScreen>
             ? TextField(
                 controller: controller,
                 autofocus: true,
+                cursorRadius: const Radius.circular(8.0),
                 decoration: InputDecoration(
-                  border: InputBorder.none,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
                   hintStyle: const TextStyle(color: Colors.black54),
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 10, horizontal: 15),
@@ -228,7 +226,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   void _saveData(String title, String value) {
-    // Replace this with your actual save logic
     print('Saving $title: $value');
   }
 }
