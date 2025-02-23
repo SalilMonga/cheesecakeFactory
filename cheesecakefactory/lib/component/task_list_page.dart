@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'task.dart';
 import 'task_section.dart';
+import 'package:confetti/confetti.dart';
 
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
@@ -13,9 +14,12 @@ class _TaskListPageState extends State<TaskListPage> {
   late Future<List<Task>> futureTasks;
   GroupMode _currentGroupMode = GroupMode.priority;
   final Set<int> _pendingCompletion = {};
+  late ConfettiController _confettiController;
 
   @override
   void initState() {
+    super.initState();
+    _confettiController = ConfettiController(duration: Duration(seconds: 2));
     super.initState();
     futureTasks = loadTasks();
   }
@@ -24,6 +28,15 @@ class _TaskListPageState extends State<TaskListPage> {
   void toggleTask(Task task) {
     if (!task.completed && !_pendingCompletion.contains(task.id)) {
       // Mark task as pending so we can animate the strike-through.
+
+      _confettiController.play();
+      // Show a snackbar message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("🎉 Task Completed! Well done! 🎉"),
+          duration: Duration(seconds: 2),
+        ),
+      );
       setState(() {
         task.completed = true;
         _pendingCompletion.add(task.id);
@@ -40,6 +53,12 @@ class _TaskListPageState extends State<TaskListPage> {
         task.completed = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
   }
 
   // Group tasks by priority.
@@ -187,6 +206,19 @@ class _TaskListPageState extends State<TaskListPage> {
                       pendingCompletion: _pendingCompletion,
                     ),
                   ],
+                  ConfettiWidget(
+                    confettiController: _confettiController,
+                    blastDirection: 3.14 / 2, // Shoot upwards
+                    emissionFrequency: 0.05, // Confetti frequency
+                    numberOfParticles: 10, // Number of confetti particles
+                    gravity: 0.2, // Slow fall
+                    colors: [
+                      Colors.blue,
+                      Colors.red,
+                      Colors.yellow,
+                      Colors.green
+                    ],
+                  )
                 ],
               ),
             );

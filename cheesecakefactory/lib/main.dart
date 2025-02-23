@@ -1,7 +1,8 @@
-import 'package:cheesecakefactory/splash_screen.dart';
+// import 'package:cheesecakefactory/splash_screen.dart';
+import 'package:cheesecakefactory/task.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'profile.dart';
+// import 'profile.dart';
 import 'NavigationBar.dart' as customNavBar;
 
 void main() {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: const TaskListPage(),
+      // home: TaskScreen(),
     );
   }
 }
