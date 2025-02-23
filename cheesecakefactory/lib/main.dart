@@ -22,11 +22,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: TaskScreen(),
+      // home: Settings(),
     );
   }
 }
-
 
 /*import 'package:cheesecakefactory/HomePage.dart';
 import 'package:flutter/cupertino.dart';
