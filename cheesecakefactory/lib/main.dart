@@ -1,4 +1,3 @@
-// import 'package:cheesecakefactory/splash_screen.dart';
 import 'package:cheesecakefactory/archive/task.dart';
 import 'package:cheesecakefactory/task_database.dart';
 import 'package:cheesecakefactory/taskbutton.dart';
@@ -18,11 +17,8 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-// Future<void> requestNotificationPermission() async {
-//   if (await Permission.notification.isDenied) {
-//     await Permission.notification.request();
-//   }
-// }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
