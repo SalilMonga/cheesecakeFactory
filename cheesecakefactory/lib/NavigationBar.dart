@@ -1,10 +1,11 @@
+import 'package:cheesecakefactory/CalenderPage.dart';
 import 'package:cheesecakefactory/FocusPage.dart';
-import 'package:cheesecakefactory/ProfilePage.dart';
 import 'package:cheesecakefactory/component/task_list_page.dart';
+import 'package:cheesecakefactory/component/task_list_test.dart';
+import 'package:cheesecakefactory/component/welcome_page_animation.dart';
 import 'package:cheesecakefactory/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'CalenderPage.dart';
 
 class NavigationBar extends StatefulWidget {
   const NavigationBar({super.key});
@@ -15,11 +16,12 @@ class NavigationBar extends StatefulWidget {
 
 class _NavigationBarState extends State<NavigationBar> {
   int _selectedIndex = 0; // Track selected tab index
+  bool _showWelcomeOverlay = true;
 
   final List<Widget> _pages = [
     // MyHomePage(title: 'Home'),
-    const TaskListPage(),
-    const CalenderPage(),
+    const TaskListPageTest(),
+    const MotherlyCalendarApp(),
     const FocusPage(),
     const ProfileScreen(),
     // const ProfilePage(),
@@ -31,10 +33,25 @@ class _NavigationBarState extends State<NavigationBar> {
     });
   }
 
+  void _hideWelcomeOverlay() {
+    setState(() {
+      _showWelcomeOverlay = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex], // Display the selected page
+      body: Stack(
+        children: [
+          _pages[_selectedIndex], // Display the selected page
+          if (_showWelcomeOverlay)
+            WelcomePage(
+              firstName: 'User',
+              onAnimationComplete: _hideWelcomeOverlay,
+            ),
+        ],
+      ),
       bottomNavigationBar: GNav(
         backgroundColor: Colors.white,
         color: Colors.black, // Default icon color
@@ -57,7 +74,7 @@ class _NavigationBarState extends State<NavigationBar> {
           ),
           GButton(
             icon: Icons.album,
-            text: 'Focus',
+            text: 'Noises',
             iconActiveColor: Colors.blueGrey,
           ),
           GButton(

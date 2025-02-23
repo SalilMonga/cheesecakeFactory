@@ -1,0 +1,2 @@
+C:/Users/Ulisses/Downloads/Repo/cheesecakeFactory/cheesecakefactory/android/app/.cxx/Debug/32694c1e/x86/CMakeFiles/edit_cache.dir
+C:/Users/Ulisses/Downloads/Repo/cheesecakeFactory/cheesecakefactory/android/app/.cxx/Debug/32694c1e/x86/CMakeFiles/rebuild_cache.dir

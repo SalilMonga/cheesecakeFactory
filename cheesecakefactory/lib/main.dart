@@ -1,12 +1,67 @@
 // import 'package:cheesecakefactory/splash_screen.dart';
-import 'package:cheesecakefactory/task.dart';
+import 'package:cheesecakefactory/archive/task.dart';
+import 'package:cheesecakefactory/task_database.dart';
+import 'package:cheesecakefactory/taskbutton.dart';
+import 'package:cheesecakefactory/login_page.dart';
+import 'package:cheesecakefactory/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 // import 'profile.dart';
 import 'NavigationBar.dart' as customNavBar;
+// import 'notification_service.dart'; // Import the notification service
 
-void main() {
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> requestNotificationPermission() async {
+  if (await Permission.notification.isDenied) {
+    // Request the permission
+    await Permission.notification.request();
+  }
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await requestNotificationPermission();
+  // Android initialization settings
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('app_icon'); // Make sure 'app_icon' exists
+
+  // For iOS or other platforms, you can add initialization settings here
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  // For testing: reset (delete) the existing database.
+  await TaskDatabase.instance.resetDatabase();
   runApp(const MyApp());
+}
+
+Future<void> showNotification() async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'your_channel_id', // Unique channel ID
+    'Your Channel Name', // Channel name visible to the user
+    channelDescription: 'Channel description', // Channel description
+    importance: Importance.max,
+    priority: Priority.high,
+    ticker: 'ticker',
+  );
+
+  const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    android: androidPlatformChannelSpecifics,
+  );
+
+  await flutterLocalNotificationsPlugin.show(
+    0, // Notification ID
+    'Yay! You completed a task', // Notification Title
+    'Hurray! You are so getting close to getting everything accomplished.', // Notification Body
+    platformChannelSpecifics,
+    payload: 'task_payload', // Optional payload
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,60 +76,14 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 30, 156, 28)),
         useMaterial3: true,
       ),
-      home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: TaskScreen(),
+      // home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/tasklist': (context) => const customNavBar.NavigationBar(),
+        // '/home': (context) => const HomePage(),
+      },
     );
   }
 }
-
-
-/*import 'package:cheesecakefactory/HomePage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-  ));
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    //
-
-    //
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ProfileScreen(), // Correct: No const
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 92, 122, 16)),
-        useMaterial3: true,
-      ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const MyHomePage (title: 'Homepage'),
-    );
-  }
-}*/

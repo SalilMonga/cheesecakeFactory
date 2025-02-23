@@ -1,3 +1,4 @@
+// Flutter Motherly Calendar App with Monthly Calendar Grid
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -36,7 +37,8 @@ class _MyAppState extends State<MyApp> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.white, // This line ensures the background is white
+          backgroundColor:
+              Colors.white, // This line ensures the background is white
           title: const Text("Add Task"),
           content: Row(
             children: [
@@ -63,7 +65,8 @@ class _MyAppState extends State<MyApp> {
               onPressed: () {
                 if (_taskController.text.isNotEmpty) {
                   setState(() {
-                    tasks[today] = (tasks[today] ?? [])..add(_taskController.text);
+                    tasks[today] = (tasks[today] ?? [])
+                      ..add(_taskController.text);
                     _taskController.clear();
                   });
                   Navigator.of(context).pop(); // Close dialog
