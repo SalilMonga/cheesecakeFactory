@@ -20,7 +20,6 @@ dependencies:
   sqflite: ^2.0.0+4
   path_provider: ^2.0.9
   path: ^1.8.0
-  table_calendar: ^3.0.2
   confetti: ^0.8.0
   gif: ^2.3.0
   fluttertoast: ^8.2.12
@@ -34,6 +33,7 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   google_nav_bar: ^5.0.7
+  table_calendar: ^3.0.8
   permission_handler: ^11.4.0
 
 dev_dependencies:

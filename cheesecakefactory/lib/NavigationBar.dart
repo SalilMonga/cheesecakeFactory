@@ -21,7 +21,7 @@ class _NavigationBarState extends State<NavigationBar> {
   final List<Widget> _pages = [
     // MyHomePage(title: 'Home'),
     const TaskListPageTest(),
-    const MotherlyCalendarApp(),
+    const NewCalendarPage(),
     const FocusPage(),
     const ProfileScreen(),
     // const ProfilePage(),
