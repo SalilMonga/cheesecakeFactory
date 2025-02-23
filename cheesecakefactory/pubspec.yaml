@@ -39,6 +39,7 @@ dependencies:
   fluttertoast: ^8.2.12
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
+  google_nav_bar: ^5.0.7
 
 dev_dependencies:
   flutter_test:
@@ -56,12 +57,14 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/tasks.json
+    - assets/images/
+    - assets/cat.gif
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  assets:
-    - assets/cat.gif
 
   # To add assets to your application, add an assets section, like this:
   # assets:
