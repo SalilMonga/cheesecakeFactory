@@ -61,7 +61,9 @@ class _SettingsState extends State<Settings> {
         title: Text('App Settings'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
       body: ListView(
