@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         children: [
           Padding(
             padding: const EdgeInsets.all(20),
-            child: SingleChildScrollView( // Added SingleChildScrollView here
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   const SizedBox(height: 40),
@@ -95,7 +95,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                     backgroundImage: AssetImage('assets/images/water_pk.png'),
                   ),
                   const SizedBox(height: 20),
-                  // Editable Profile Fields
                   _itemProfile('Name', _nameController, CupertinoIcons.person),
                   const SizedBox(height: 10),
                   _itemProfile('Phone', _phoneController, CupertinoIcons.phone),
@@ -103,23 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   _itemProfile('Address', _addressController, CupertinoIcons.location),
                   const SizedBox(height: 10),
                   _itemProfile('Email', _emailController, CupertinoIcons.mail),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Handle saving logic here, e.g., display saved data
-                        print('Name: ${_nameController.text}');
-                        print('Phone: ${_phoneController.text}');
-                        print('Address: ${_addressController.text}');
-                        print('Email: ${_emailController.text}');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(15),
-                      ),
-                      child: const Text('Save Profile'),
-                    ),
-                  ),
+                  // Removed Save Profile button
                 ],
               ),
             ),
@@ -129,15 +112,14 @@ class _ProfileScreenState extends State<ProfileScreen>
             right: 20,
             child: GestureDetector(
               onTap: () {
-                // Trigger the rotation animation when settings icon is tapped
-                _animationController.forward(from: 0); // Reset and play the animation
+                _animationController.forward(from: 0);
                 print('Settings tapped');
               },
               child: AnimatedBuilder(
                 animation: _rotationAnimation,
                 builder: (context, child) {
                   return Transform.rotate(
-                    angle: _rotationAnimation.value, // Apply rotation
+                    angle: _rotationAnimation.value,
                     child: child,
                   );
                 },
@@ -175,7 +157,13 @@ class _ProfileScreenState extends State<ProfileScreen>
         trailing: IconButton(
           onPressed: () {
             setState(() {
-              _isEditing[title] = !_isEditing[title]!;
+              if (_isEditing[title]!) {
+                _isEditing[title] = false;
+                _showSnackBar(context, '$title saved');
+                _saveData(title, controller.text);
+              } else {
+                _isEditing[title] = true;
+              }
             });
           },
           icon: Icon(
@@ -187,22 +175,60 @@ class _ProfileScreenState extends State<ProfileScreen>
         subtitle: _isEditing[title]!
             ? TextField(
                 controller: controller,
-                autofocus: true, // Automatically focus when editing starts
-                decoration: const InputDecoration(
+                autofocus: true,
+                decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintStyle: TextStyle(color: Colors.black54),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  hintStyle: const TextStyle(color: Colors.black54),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10, horizontal: 15),
+                  filled: true,
+                  fillColor: Colors.grey[200],
                 ),
                 style: TextStyle(
-                    color: Colors.black.withOpacity(0.8), fontWeight: FontWeight.bold),
+                    color: Colors.black.withOpacity(0.8),
+                    fontWeight: FontWeight.bold),
               )
             : Text(
                 controller.text,
                 style: TextStyle(
-                    color: Colors.black.withOpacity(0.8), fontWeight: FontWeight.bold),
+                    color: Colors.black.withOpacity(0.8),
+                    fontWeight: FontWeight.bold),
               ),
       ),
     );
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Material(
+          elevation: 4.0,
+          borderRadius: BorderRadius.circular(10.0),
+          child: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 203, 231, 234),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Text(message, style: const TextStyle(color: Colors.black)),
+          ),
+        ),
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.only(bottom: 80, left: 20, right: 20),
+        action: SnackBarAction(
+          label: 'Dismiss',
+          textColor: Colors.white,
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
+  }
+
+  void _saveData(String title, String value) {
+    // Replace this with your actual save logic
+    print('Saving $title: $value');
   }
 }
