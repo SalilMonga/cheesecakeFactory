@@ -12,6 +12,7 @@ class TaskListPage extends StatefulWidget {
 class _TaskListPageState extends State<TaskListPage> {
   late Future<List<Task>> futureTasks;
   GroupMode _currentGroupMode = GroupMode.priority;
+  final Set<int> _pendingCompletion = {};
 
   @override
   void initState() {
@@ -21,9 +22,24 @@ class _TaskListPageState extends State<TaskListPage> {
 
   // Toggle the completed state of a task.
   void toggleTask(Task task) {
-    setState(() {
-      task.completed = !task.completed;
-    });
+    if (!task.completed && !_pendingCompletion.contains(task.id)) {
+      // Mark task as pending so we can animate the strike-through.
+      setState(() {
+        task.completed = true;
+        _pendingCompletion.add(task.id);
+      });
+      // Wait for the animation duration before marking it complete.
+      Future.delayed(const Duration(milliseconds: 400), () {
+        setState(() {
+          _pendingCompletion.remove(task.id);
+        });
+      });
+    } else {
+      // When toggling back (or uncompleting), update immediately.
+      setState(() {
+        task.completed = false;
+      });
+    }
   }
 
   // Group tasks by priority.
@@ -122,7 +138,9 @@ class _TaskListPageState extends State<TaskListPage> {
                 child: Text('Error loading tasks: ${snapshot.error}'));
           } else if (snapshot.hasData) {
             final tasks = snapshot.data!;
-            final incompleteTasks = tasks.where((t) => !t.completed).toList();
+            final incompleteTasks = tasks
+                .where((t) => !t.completed || _pendingCompletion.contains(t.id))
+                .toList();
             final completedTasks = tasks.where((t) => t.completed).toList();
             final groupedIncomplete = _currentGroupMode == GroupMode.priority
                 ? _groupTasksByPriority(incompleteTasks)
@@ -153,6 +171,7 @@ class _TaskListPageState extends State<TaskListPage> {
                           tasks: groupedIncomplete[groupKey]!,
                           groupMode: _currentGroupMode,
                           onToggleTask: toggleTask,
+                          pendingCompletion: _pendingCompletion,
                         ),
                         const SizedBox(height: 16),
                       ],
@@ -165,6 +184,7 @@ class _TaskListPageState extends State<TaskListPage> {
                       tasks: completedTasks,
                       groupMode: _currentGroupMode,
                       onToggleTask: toggleTask,
+                      pendingCompletion: _pendingCompletion,
                     ),
                   ],
                 ],

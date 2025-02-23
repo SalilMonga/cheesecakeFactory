@@ -7,6 +7,7 @@ class TaskSection extends StatelessWidget {
   final List<Task> tasks;
   final GroupMode groupMode;
   final Function(Task) onToggleTask;
+  final Set<int> pendingCompletion;
 
   const TaskSection({
     super.key,
@@ -14,6 +15,7 @@ class TaskSection extends StatelessWidget {
     required this.tasks,
     required this.groupMode,
     required this.onToggleTask,
+    required this.pendingCompletion,
   });
 
   @override
@@ -43,6 +45,7 @@ class TaskSection extends StatelessWidget {
             sectionTitle: sectionTitle,
             groupMode: groupMode,
             onToggle: () => onToggleTask(task),
+            pendingCompletion: pendingCompletion,
           );
         }).toList(),
       ),

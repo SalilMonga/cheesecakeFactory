@@ -1,10 +1,41 @@
 import 'package:flutter/material.dart';
 import 'task.dart';
 
-TextStyle getTaskTextStyle(Task task, String sectionTitle, GroupMode mode) {
+// TextStyle getTaskTextStyle(Task task, String sectionTitle, GroupMode mode) {
+//   if (mode == GroupMode.priority) {
+//     return TextStyle(
+//       decoration: task.completed ? TextDecoration.lineThrough : null,
+//       fontWeight: sectionTitle.toLowerCase() == 'high'
+//           ? FontWeight.bold
+//           : FontWeight.normal,
+//       color: sectionTitle.toLowerCase() == 'high'
+//           ? Colors.red[400]
+//           : sectionTitle.toLowerCase() == 'medium'
+//               ? Colors.purple[200]
+//               : Colors.blue[200],
+//     );
+//   } else {
+//     return TextStyle(
+//       decoration: task.completed ? TextDecoration.lineThrough : null,
+//       fontWeight: sectionTitle.toLowerCase() == 'today'
+//           ? FontWeight.bold
+//           : FontWeight.normal,
+//       color: sectionTitle.toLowerCase() == 'today'
+//           ? Colors.green[400]
+//           : sectionTitle.toLowerCase() == 'this week'
+//               ? Colors.orange[400]
+//               : Colors.blueGrey,
+//     );
+//   }
+// }
+
+TextStyle getTaskTextStyle(
+    Task task, String sectionTitle, GroupMode mode, bool isPending) {
+  // Apply strike-through if the task is completed or pending.
+  final bool strike = task.completed || isPending;
   if (mode == GroupMode.priority) {
     return TextStyle(
-      decoration: task.completed ? TextDecoration.lineThrough : null,
+      decoration: strike ? TextDecoration.lineThrough : null,
       fontWeight: sectionTitle.toLowerCase() == 'high'
           ? FontWeight.bold
           : FontWeight.normal,
@@ -16,7 +47,7 @@ TextStyle getTaskTextStyle(Task task, String sectionTitle, GroupMode mode) {
     );
   } else {
     return TextStyle(
-      decoration: task.completed ? TextDecoration.lineThrough : null,
+      decoration: strike ? TextDecoration.lineThrough : null,
       fontWeight: sectionTitle.toLowerCase() == 'today'
           ? FontWeight.bold
           : FontWeight.normal,
@@ -34,6 +65,7 @@ class TaskTile extends StatelessWidget {
   final String sectionTitle;
   final GroupMode groupMode;
   final VoidCallback onToggle;
+  final Set<int> pendingCompletion;
 
   const TaskTile({
     Key? key,
@@ -41,6 +73,7 @@ class TaskTile extends StatelessWidget {
     required this.sectionTitle,
     required this.groupMode,
     required this.onToggle,
+    required this.pendingCompletion,
   }) : super(key: key);
 
   @override
@@ -55,9 +88,11 @@ class TaskTile extends StatelessWidget {
         onChanged: (_) => onToggle(),
         activeColor: Colors.grey[400],
       ),
-      title: Text(
-        task.name,
-        style: getTaskTextStyle(task, sectionTitle, groupMode),
+      title: AnimatedDefaultTextStyle(
+        style: getTaskTextStyle(
+            task, sectionTitle, groupMode, pendingCompletion.contains(task.id)),
+        duration: const Duration(milliseconds: 500), // adjust to your liking
+        child: Text(task.name),
       ),
       subtitle: task.timeline.isNotEmpty
           ? Row(
