@@ -1,7 +1,7 @@
 import 'package:cheesecakefactory/main.dart';
 import 'package:cheesecakefactory/task_database.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:intl/intl.dart';
 import 'task.dart';
 import 'task_section.dart';
@@ -24,6 +24,7 @@ class _TaskListPageState extends State<TaskListPageTest> {
   late ConfettiController _confettiController;
   double _scrollPosition = 0.0;
   get floatingActionButton => null;
+  stt.SpeechToText _speech = stt.SpeechToText();
 
   @override
   void initState() {
@@ -76,6 +77,25 @@ class _TaskListPageState extends State<TaskListPageTest> {
     setState(() {
       futureTasks = TaskDatabase.instance.fetchTasks();
     });
+  }
+
+  void _startListening(TextEditingController controller) async {
+    bool available = await _speech.initialize(
+      onStatus: (status) => print('Status: $status'),
+      onError: (error) => print('Error: $error'),
+    );
+
+    if (available) {
+      _speech.listen(
+        onResult: (result) {
+          setState(() {
+            controller = result.recognizedWords as TextEditingController;
+          });
+        },
+      );
+    } else {
+      print("Speech recognition not available");
+    }
   }
 
   Future<void> _showAddTaskDialog() async {
@@ -136,10 +156,17 @@ class _TaskListPageState extends State<TaskListPageTest> {
                   children: [
                     TextField(
                       controller: taskNameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Task Name',
-                        hintText: 'Enter task name',
-                      ),
+                      decoration: InputDecoration(
+                          labelText: 'Task Name',
+                          hintText: 'Enter task name',
+                          suffixIcon: IconButton(
+                            icon: const Icon(
+                                Icons.mic), // Replace with any icon you want
+                            onPressed: () {
+                              _startListening(
+                                  taskNameController); // Call your function here
+                            },
+                          )),
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
