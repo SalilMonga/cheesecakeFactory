@@ -1,5 +1,6 @@
 // import 'package:cheesecakefactory/splash_screen.dart';
-import 'package:cheesecakefactory/task.dart';
+import 'package:cheesecakefactory/archive/task.dart';
+import 'package:cheesecakefactory/taskbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'profile.dart';
@@ -21,8 +22,8 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 30, 156, 28)),
         useMaterial3: true,
       ),
-      home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: TaskScreen(),
+      // home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
+      home: TaskPage(),
     );
   }
 }

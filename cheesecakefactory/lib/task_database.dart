@@ -17,7 +17,7 @@ class TaskDatabase {
   // Initialize the database
   Future<Database> _initDB(String filePath) async {
     final directory = await getApplicationDocumentsDirectory();
-    final path = '${directory.path}/$filePath';  // String interpolation
+    final path = '${directory.path}/$filePath'; // String interpolation
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
@@ -29,28 +29,36 @@ class TaskDatabase {
         text TEXT
       )
     ''');
+    print('Database created with tasks table');
   }
 
   // Insert a task into the database
   Future<int> addTask(Task task) async {
     final db = await instance.database;
-    return await db.insert('tasks', task.toMap());
+    final id = await db.insert('tasks', task.toMap());
+    print('Task added: ${task.toMap()}');
+    return id;
   }
 
   // Fetch all tasks from the database
   Future<List<Task>> fetchTasks() async {
     final db = await instance.database;
     final result = await db.query('tasks');
-    return result.map((e) => Task.fromMap(e)).toList();
+    final tasks = result.map((e) => Task.fromMap(e)).toList();
+    print('Tasks fetched: $tasks');
+    return tasks;
   }
 
   // Delete a task from the database
   Future<int> deleteTask(int id) async {
     final db = await instance.database;
-    return await db.delete(
+    final result = await db.delete(
       'tasks',
-      where: 'id = ?',  // String interpolation not necessary here as 'id' is already a string.
+      where:
+          'id = ?', // String interpolation not necessary here as 'id' is already a string.
       whereArgs: [id],
     );
+    print('Task deleted with id: $id');
+    return result;
   }
 }
