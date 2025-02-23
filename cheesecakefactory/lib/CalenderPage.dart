@@ -16,14 +16,3 @@ class CalenderPage extends StatelessWidget {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    title: 'Flutter Demo',
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 255, 255, 255)),
-      useMaterial3: true,
-    ),
-    home: const CalenderPage(),
-  ));
-}

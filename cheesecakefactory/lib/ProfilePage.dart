@@ -16,14 +16,3 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    title: 'Flutter Demo',
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 229, 214, 172)),
-      useMaterial3: true,
-    ),
-    home: const ProfilePage(),
-  ));
-}

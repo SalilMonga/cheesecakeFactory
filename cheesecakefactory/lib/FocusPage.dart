@@ -17,14 +17,3 @@ class FocusPage extends StatelessWidget {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    title: 'Flutter Demo',
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 12, 57, 189)),
-      useMaterial3: true,
-    ),
-    home: const FocusPage(),
-  ));
-}
