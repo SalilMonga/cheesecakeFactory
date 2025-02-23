@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'NavigationBar.dart' as customNavBar;
 import 'notification_service.dart'; // Import the notification service
-//import 'CustomTheme.dart' as customTheme;
+import 'CustomTheme.dart' as customTheme;
 import 'NavigationBar.dart' as customNavBar;
 
 void main() {
@@ -34,9 +34,11 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             customNavBar.NavigationBar(),
+            Expanded(
+              child: customNavBar.NavigationBar(),
+            ),
             Text('Hello, Flutter!'),
           ],
         ),
