@@ -10,7 +10,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'profile.dart';
 import 'NavigationBar.dart' as customNavBar;
-// import 'notification_service.dart'; // Import the notification service
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -57,8 +56,8 @@ Future<void> showNotification() async {
 
   await flutterLocalNotificationsPlugin.show(
     0, // Notification ID
-    'Yay! You completed a task', // Notification Title
-    'Hurray! You are so getting close to getting everything accomplished.', // Notification Body
+    'Task Reminder', // Notification Title
+    'You have a task to complete!', // Notification Body
     platformChannelSpecifics,
     payload: 'task_payload', // Optional payload
   );

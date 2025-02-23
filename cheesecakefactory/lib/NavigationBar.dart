@@ -74,7 +74,7 @@ class _NavigationBarState extends State<NavigationBar> {
           ),
           GButton(
             icon: Icons.album,
-            text: 'Noises',
+            text: 'Focus',
             iconActiveColor: Colors.blueGrey,
           ),
           GButton(
