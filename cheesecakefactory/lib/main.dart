@@ -1,11 +1,20 @@
 // import 'package:cheesecakefactory/splash_screen.dart';
-import 'package:cheesecakefactory/task.dart';
+import 'package:cheesecakefactory/archive/task.dart';
+import 'package:cheesecakefactory/task_database.dart';
+import 'package:cheesecakefactory/taskbutton.dart';
+import 'package:cheesecakefactory/login_page.dart';
+import 'package:cheesecakefactory/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'profile.dart';
 import 'NavigationBar.dart' as customNavBar;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // For testing: reset (delete) the existing database.
+  await TaskDatabase.instance.resetDatabase();
+
   runApp(const MyApp());
 }
 
@@ -21,59 +30,14 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 30, 156, 28)),
         useMaterial3: true,
       ),
-      home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: Settings(),
+      // home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/tasklist': (context) => const customNavBar.NavigationBar(),
+        // '/home': (context) => const HomePage(),
+      },
     );
   }
 }
-
-/*import 'package:cheesecakefactory/HomePage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-  ));
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    //
-
-    //
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ProfileScreen(), // Correct: No const
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 92, 122, 16)),
-        useMaterial3: true,
-      ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const MyHomePage (title: 'Homepage'),
-    );
-  }
-}*/

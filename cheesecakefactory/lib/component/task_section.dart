@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'task.dart';
 import 'task_tile.dart';
+import 'task_list_test.dart';
 
-class TaskSection extends StatelessWidget {
+class TaskSection extends StatefulWidget {
   final String sectionTitle;
   final List<Task> tasks;
   final GroupMode groupMode;
@@ -19,10 +20,23 @@ class TaskSection extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    if (tasks.isEmpty) return const SizedBox();
+  State<TaskSection> createState() => _TaskSectionState();
+}
 
-    final headingStyle = sectionTitle.toLowerCase() == 'completed'
+class _TaskSectionState extends State<TaskSection> {
+  bool _isExpanded = false;
+  @override
+  void initState() {
+    super.initState();
+    _isExpanded = widget.sectionTitle.toLowerCase() == 'high' ||
+        widget.sectionTitle.toLowerCase() == 'today';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.tasks.isEmpty) return const SizedBox();
+
+    final headingStyle = widget.sectionTitle.toLowerCase() == 'completed'
         ? TextStyle(
             fontSize: 18, fontStyle: FontStyle.italic, color: Colors.grey[600])
         : const TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
@@ -30,22 +44,29 @@ class TaskSection extends StatelessWidget {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
+        key: PageStorageKey(widget.sectionTitle),
         tilePadding: EdgeInsets.zero,
         childrenPadding: EdgeInsets.zero,
         title: Text(
-          '$sectionTitle (${tasks.length})',
+          '${widget.sectionTitle} (${widget.tasks.length})',
           style: headingStyle,
         ),
-        // Automatically expand High priority or Today section
-        initiallyExpanded: sectionTitle.toLowerCase() == 'high' ||
-            sectionTitle.toLowerCase() == 'today',
-        children: tasks.map((task) {
+        initiallyExpanded: _isExpanded,
+        onExpansionChanged: (bool expanded) {
+          setState(() {
+            _isExpanded = expanded;
+          });
+        },
+        // // Automatically expand High priority or Today section
+        // initiallyExpanded: widget.sectionTitle.toLowerCase() == 'high' ||
+        //     widget.sectionTitle.toLowerCase() == 'today',
+        children: widget.tasks.map((task) {
           return TaskTile(
             task: task,
-            sectionTitle: sectionTitle,
-            groupMode: groupMode,
-            onToggle: () => onToggleTask(task),
-            pendingCompletion: pendingCompletion,
+            sectionTitle: widget.sectionTitle,
+            groupMode: widget.groupMode,
+            onToggle: () => widget.onToggleTask(task),
+            pendingCompletion: widget.pendingCompletion,
           );
         }).toList(),
       ),
