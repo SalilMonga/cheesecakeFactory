@@ -194,13 +194,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 ),
-                style: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.black.withOpacity(0.8), fontWeight: FontWeight.bold),
               )
             : Text(
                 controller.text,
-                style: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: Colors.black.withOpacity(0.8), fontWeight: FontWeight.bold),
               ),
       ),
     );
