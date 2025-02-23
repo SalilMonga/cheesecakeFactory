@@ -6,18 +6,18 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: MyApp(),
+    home: NewCalendarPage(),
   ));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class NewCalendarPage extends StatefulWidget {
+  const NewCalendarPage({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<NewCalendarPage> createState() => _NewCalendarPageState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _NewCalendarPageState extends State<NewCalendarPage> {
   DateTime today = DateTime.now();
   final TextEditingController _taskController = TextEditingController();
   stt.SpeechToText _speech = stt.SpeechToText();
