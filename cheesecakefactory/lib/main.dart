@@ -1,10 +1,8 @@
-// import 'package:cheesecakefactory/splash_screen.dart';
-import 'package:cheesecakefactory/task.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// import 'profile.dart';
 import 'NavigationBar.dart' as customNavBar;
 import 'notification_service.dart'; // Import the notification service
+import 'CustomTheme.dart' as customTheme;
+import 'NavigationBar.dart' as customNavBar;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,14 +20,27 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 30, 156, 28),
-        ),
-        useMaterial3: true,
+      home: HomePage(), 
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home Page'),
       ),
-      home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: TaskScreen(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            customNavBar.NavigationBar(),
+            Text('Hello, Flutter!'),
+          ],
+        ),
+      ),
     );
   }
 }
