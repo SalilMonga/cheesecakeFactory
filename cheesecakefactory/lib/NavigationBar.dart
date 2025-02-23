@@ -1,5 +1,10 @@
+import 'package:cheesecakefactory/FocusPage.dart';
+import 'package:cheesecakefactory/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+
+import 'HomePage.dart';
+import 'CalenderPage.dart';
 
 class NavigationBar extends StatefulWidget {
   final Function(int) onTabChange; // Callback function for tab changes
@@ -27,60 +32,48 @@ class _NavigationBarState extends State<NavigationBar> {
         });
         widget.onTabChange(index); // Notify parent widget
       },
-      tabs: const [
+      tabs: [
         GButton(
           icon: Icons.home,
           text: 'Home',
+            onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Hii',)),
+            );
+            },          
         ),
         GButton(
           icon: Icons.dashboard_sharp,
           text: 'Calendar',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) =>const CalenderPage()),
+            );
+            },
         ),
         GButton(
           icon: Icons.album,
           text: 'Focus',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const FocusPage()),
+            );
+            },
         ),
         GButton(
           icon: Icons.account_circle,
           text: 'Profile',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+            },
         ),
       ],
     );
   }
 }
-
-/*import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-
-class NavigationBar extends StatelessWidget {
-  const NavigationBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GNav(
-      backgroundColor: Colors.black,
-      color: Colors.white,
-      activeColor: Colors.white,
-      tabBackgroundColor: Colors.grey,
-      gap: 8,
-      tabs: const [
-        GButton(
-          icon: Icons.home,
-          text: 'Home',
-        ),
-        GButton(
-          icon: Icons.dashboard_sharp,
-          text: 'Calander',
-        ),
-        GButton(
-          icon: Icons.album,
-          text: 'Focus',
-        ),
-        GButton(
-          icon: Icons.account_circle,
-          text: 'Profile',
-        ),
-      ],
-    );
-  }
-}*/

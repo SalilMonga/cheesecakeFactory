@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class CalenderPage extends StatelessWidget {
-  const CalenderPage({super.key});
+class FocusPage extends StatelessWidget {
+  const FocusPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Calender'),
+        title: const Text('Focus'),
       ),
       body: const Center(
-        child: Text('Welcome to the Calender Page!'),
+        child: Text('Welcome to the Focus Page!'),
       ),
     );
   }
@@ -20,9 +20,9 @@ void main() {
   runApp(MaterialApp(
     title: 'Flutter Demo',
     theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 104, 194, 140)),
+      colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 12, 57, 189)),
       useMaterial3: true,
     ),
-    home: const CalenderPage(),
+    home: const FocusPage(),
   ));
 }
