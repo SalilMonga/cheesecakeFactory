@@ -17,7 +17,7 @@ class TaskDatabase {
   // Initialize the database
   Future<Database> _initDB(String filePath) async {
     final directory = await getApplicationDocumentsDirectory();
-    final path = directory.path + '/$filePath';
+    final path = '${directory.path}/$filePath';  // String interpolation
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
@@ -49,7 +49,7 @@ class TaskDatabase {
     final db = await instance.database;
     return await db.delete(
       'tasks',
-      where: 'id = ?',
+      where: 'id = ?',  // String interpolation not necessary here as 'id' is already a string.
       whereArgs: [id],
     );
   }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:sqflite/sqflite.dart';
 
-void main() => runApp(TaskApp());
+void main() => runApp(const TaskApp());
 
 class TaskApp extends StatelessWidget {
   const TaskApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: TaskButton(),
     );
   }
@@ -23,74 +22,22 @@ class TaskButton extends StatefulWidget {
 }
 
 class _TaskButtonState extends State<TaskButton> {
-  List<Map<String, dynamic>> tasks = []; // Store both task and ID
-  TextEditingController _controller = TextEditingController();
-  stt.SpeechToText _speech = stt.SpeechToText();
+  List<String> tasks = []; // Only store task descriptions
+  final TextEditingController _controller = TextEditingController();
+  final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
   bool _isInputVisible = false; // To control input visibility
-  late Database _database;
-
-  // Initialize the database
-  Future<void> _initializeDatabase() async {
-    final databasePath = await getDatabasesPath();
-    final path = join(databasePath, 'tasks.db');
-    
-    _database = await openDatabase(path, version: 1, onCreate: (db, version) {
-      return db.execute(
-        "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT)",
-      );
-    });
-
-    _loadTasks();
-  }
-
-  // Load tasks from the database
-  Future<void> _loadTasks() async {
-    final List<Map<String, dynamic>> maps = await _database.query('tasks');
-    setState(() {
-      tasks = maps;
-    });
-  }
-
-  // Add task to the database
-  Future<void> _addTaskToDatabase(String task) async {
-    await _database.insert(
-      'tasks',
-      {'task': task},
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    _loadTasks(); // Refresh tasks after adding a new one
-  }
-
-  // Delete task from the database
-  Future<void> _deleteTaskFromDatabase(int id) async {
-    await _database.delete(
-      'tasks',
-      where: "id = ?",
-      whereArgs: [id],
-    );
-    _loadTasks(); // Refresh tasks after deletion
-  }
 
   void _addTask() {
     if (_controller.text.isNotEmpty) {
       setState(() {
-        tasks.add({'task': _controller.text});
+        tasks.add(_controller.text); // Add task to the list
       });
-      _addTaskToDatabase(_controller.text);
       _controller.clear();  // Clear the text input field
       setState(() {
         _isInputVisible = false; // Hide input field after adding the task
       });
     }
-  }
-
-  void _deleteTask(int index) {
-    setState(() {
-      int taskIdToDelete = tasks[index]['id']; // Get the ID of the task to delete
-      tasks.removeAt(index); // Remove from list
-      _deleteTaskFromDatabase(taskIdToDelete); // Delete from database using the task ID
-    });
   }
 
   void _startListening() async {
@@ -106,7 +53,9 @@ class _TaskButtonState extends State<TaskButton> {
       });
     } else {
       // Handle the case where speech recognition is not available
-      print("Speech recognition not available.");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Speech recognition not available")),
+      );
     }
   }
 
@@ -121,12 +70,6 @@ class _TaskButtonState extends State<TaskButton> {
     setState(() {
       _isInputVisible = false; // Hide input field
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeDatabase(); // Initialize the database when the screen loads
   }
 
   @override
@@ -146,11 +89,7 @@ class _TaskButtonState extends State<TaskButton> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(child: Text(tasks[index]['task'])),
-                          IconButton(
-                            icon: const Icon(Icons.remove_circle, color: Colors.red),
-                            onPressed: () => _deleteTask(index),
-                          ),
+                          Expanded(child: Text(tasks[index])),
                         ],
                       ),
                     );
