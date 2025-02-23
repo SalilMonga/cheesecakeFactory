@@ -1,10 +1,9 @@
-
 import 'package:cheesecakefactory/FocusPage.dart';
 import 'package:cheesecakefactory/ProfilePage.dart';
+import 'package:cheesecakefactory/component/task_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'CalenderPage.dart';
-import 'HomePage.dart';
 
 class NavigationBar extends StatefulWidget {
   const NavigationBar({super.key});
@@ -17,10 +16,11 @@ class _NavigationBarState extends State<NavigationBar> {
   int _selectedIndex = 0; // Track selected tab index
 
   final List<Widget> _pages = [
-    MyHomePage(title: 'Home'),
-    CalenderPage(),
-    FocusPage(),
-    ProfilePage(),
+    // MyHomePage(title: 'Home'),
+    const TaskListPage(),
+    const CalenderPage(),
+    const FocusPage(),
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -37,14 +37,15 @@ class _NavigationBarState extends State<NavigationBar> {
         backgroundColor: Colors.white,
         color: Colors.black, // Default icon color
         //activeColor: Colors.green, // Color when selected
-        tabBackgroundColor: const Color.fromARGB(255, 231, 235, 225), // Background of selected tab
+        tabBackgroundColor: const Color.fromARGB(
+            255, 231, 235, 225), // Background of selected tab
         gap: 8,
         selectedIndex: _selectedIndex, // Track the selected index
         onTabChange: _onItemTapped,
         tabs: const [
           GButton(
             icon: Icons.home,
-            text : 'Home',
+            text: 'Home',
             iconActiveColor: Colors.green,
           ),
           GButton(
