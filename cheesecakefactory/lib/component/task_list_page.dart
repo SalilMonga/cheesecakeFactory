@@ -1,7 +1,9 @@
+import 'package:cheesecakefactory/task_database.dart';
 import 'package:flutter/material.dart';
 import 'task.dart';
 import 'task_section.dart';
 import 'package:confetti/confetti.dart';
+import 'task_list_test.dart';
 
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
@@ -9,6 +11,8 @@ class TaskListPage extends StatefulWidget {
   @override
   _TaskListPageState createState() => _TaskListPageState();
 }
+
+// enum GroupMode { priority, date }
 
 class _TaskListPageState extends State<TaskListPage> {
   late Future<List<Task>> futureTasks;
@@ -20,7 +24,8 @@ class _TaskListPageState extends State<TaskListPage> {
   void initState() {
     super.initState();
     _confettiController = ConfettiController(duration: Duration(seconds: 2));
-    futureTasks = loadTasks();
+    // futureTasks = loadTasks();
+    futureTasks = TaskDatabase.instance.fetchTasks();
   }
 
   // Toggle the completed state of a task.
@@ -38,7 +43,9 @@ class _TaskListPageState extends State<TaskListPage> {
       );
       setState(() {
         task.completed = true;
-        _pendingCompletion.add(task.id);
+        if (task.id != null) {
+          _pendingCompletion.add(task.id!);
+        }
       });
       // Wait for the animation duration before marking it complete.
       Future.delayed(const Duration(milliseconds: 400), () {
