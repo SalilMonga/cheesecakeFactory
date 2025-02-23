@@ -45,6 +45,7 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   google_nav_bar: ^5.0.7
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
