@@ -1,0 +1,2 @@
+C:/repos/cheesecakeFactory/cheesecakefactory/android/app/.cxx/Debug/125x4e6j/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/repos/cheesecakeFactory/cheesecakefactory/android/app/.cxx/Debug/125x4e6j/armeabi-v7a/CMakeFiles/rebuild_cache.dir

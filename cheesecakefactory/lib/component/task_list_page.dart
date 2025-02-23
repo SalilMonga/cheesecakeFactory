@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'task.dart';
 import 'task_section.dart';
+import 'package:confetti/confetti.dart';
 
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
@@ -13,10 +14,12 @@ class _TaskListPageState extends State<TaskListPage> {
   late Future<List<Task>> futureTasks;
   GroupMode _currentGroupMode = GroupMode.priority;
   final Set<int> _pendingCompletion = {};
+  late ConfettiController _confettiController;
 
   @override
   void initState() {
     super.initState();
+    _confettiController = ConfettiController(duration: Duration(seconds: 2));
     futureTasks = loadTasks();
   }
 
@@ -24,6 +27,15 @@ class _TaskListPageState extends State<TaskListPage> {
   void toggleTask(Task task) {
     if (!task.completed && !_pendingCompletion.contains(task.id)) {
       // Mark task as pending so we can animate the strike-through.
+
+      _confettiController.play();
+      // Show a snackbar message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("🎉 Task Completed! Well done! 🎉"),
+          duration: Duration(seconds: 2),
+        ),
+      );
       setState(() {
         task.completed = true;
         _pendingCompletion.add(task.id);
@@ -40,6 +52,12 @@ class _TaskListPageState extends State<TaskListPage> {
         task.completed = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
   }
 
   // Group tasks by priority.
@@ -128,71 +146,84 @@ class _TaskListPageState extends State<TaskListPage> {
           ),
         ],
       ),
-      body: FutureBuilder<List<Task>>(
-        future: futureTasks,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-                child: Text('Error loading tasks: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final tasks = snapshot.data!;
-            final incompleteTasks = tasks
-                .where((t) => !t.completed || _pendingCompletion.contains(t.id))
-                .toList();
-            final completedTasks = tasks.where((t) => t.completed).toList();
-            final groupedIncomplete = _currentGroupMode == GroupMode.priority
-                ? _groupTasksByPriority(incompleteTasks)
-                : _groupTasksByDateRange(incompleteTasks);
-            // final groupedTasks = _currentGroupMode == GroupMode.priority
-            //     ? _groupTasksByPriority(tasks)
-            //     : _groupTasksByDateRange(tasks);
-            final List<String> groupOrder =
-                _currentGroupMode == GroupMode.priority
-                    ? ['High', 'Medium', 'Low']
-                    : ['Today', 'This Week', 'This Month'];
+      body: Stack(
+        children: [
+          FutureBuilder<List<Task>>(
+            future: futureTasks,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(
+                    child: Text('Error loading tasks: ${snapshot.error}'));
+              } else if (snapshot.hasData) {
+                final tasks = snapshot.data!;
+                final incompleteTasks = tasks
+                    .where((t) =>
+                        !t.completed || _pendingCompletion.contains(t.id))
+                    .toList();
+                final completedTasks = tasks.where((t) => t.completed).toList();
+                final groupedIncomplete =
+                    _currentGroupMode == GroupMode.priority
+                        ? _groupTasksByPriority(incompleteTasks)
+                        : _groupTasksByDateRange(incompleteTasks);
+                final List<String> groupOrder =
+                    _currentGroupMode == GroupMode.priority
+                        ? ['High', 'Medium', 'Low']
+                        : ['Today', 'This Week', 'This Month'];
 
-            return SingleChildScrollView(
-              padding: const EdgeInsets.only(
-                top: 2.0,
-                left: 16.0,
-                right: 16.0,
-                bottom: 16.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...groupOrder.map((groupKey) {
-                    return Column(
-                      children: [
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    top: 2.0,
+                    left: 16.0,
+                    right: 16.0,
+                    bottom: 16.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...groupOrder.map((groupKey) {
+                        return Column(
+                          children: [
+                            TaskSection(
+                              sectionTitle: groupKey,
+                              tasks: groupedIncomplete[groupKey]!,
+                              groupMode: _currentGroupMode,
+                              onToggleTask: toggleTask,
+                              pendingCompletion: _pendingCompletion,
+                            ),
+                            const SizedBox(height: 16),
+                          ],
+                        );
+                      }),
+                      if (completedTasks.isNotEmpty) ...[
+                        const Divider(),
                         TaskSection(
-                          sectionTitle: groupKey,
-                          tasks: groupedIncomplete[groupKey]!,
+                          sectionTitle: 'Completed',
+                          tasks: completedTasks,
                           groupMode: _currentGroupMode,
                           onToggleTask: toggleTask,
                           pendingCompletion: _pendingCompletion,
                         ),
-                        const SizedBox(height: 16),
                       ],
-                    );
-                  }),
-                  if (completedTasks.isNotEmpty) ...[
-                    const Divider(),
-                    TaskSection(
-                      sectionTitle: 'Completed',
-                      tasks: completedTasks,
-                      groupMode: _currentGroupMode,
-                      onToggleTask: toggleTask,
-                      pendingCompletion: _pendingCompletion,
-                    ),
-                  ],
-                ],
-              ),
-            );
-          }
-          return const SizedBox();
-        },
+                    ],
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirection: 3.14 / 2, // downward
+              emissionFrequency: 0.05,
+              numberOfParticles: 20,
+              gravity: 0.1,
+            ),
+          ),
+        ],
       ),
     );
   }
