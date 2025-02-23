@@ -1,3 +1,4 @@
+import 'package:cheesecakefactory/Settings.dart'; // Import the settings.dart file
 import 'package:flutter/material.dart';
 
 void main() {
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Settings(),
     );
   }
 }
@@ -123,3 +125,74 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+// import 'package:flutter/material.dart';
+
+// class Home extends StatefulWidget {
+//   const Home({super.key});
+//   @override
+//   State<Home> createState() => _HomeState();
+// }
+
+// class _HomeState extends State<Home> {
+//   final player = AudioPlayer();
+//   String formatDuration(Duration d) {
+//     final minutes = d.inMinutes.remainder(60);
+//     final seconds = d.inSeconds.remainder(60);
+//     return "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+//   }
+
+//   void handlePlayPause() {
+//     if (player.playing) {
+//       player.pause();
+//     } else {
+//       player.play();
+//     }
+//   }
+
+//   void handleSeek(double value) {
+//     player.seek(Duration(seconds: value.toInt()));
+//   }
+
+//   Duration position = Duration.zero;
+//   Duration duration = Duration.zero;
+//   @override
+//   void initState() {
+//     super.initState();
+//     player.setUrl('https://download.samplelib.com/mp3/sample-15s.mp3');
+//     player.positionStream.listen((p) {
+//       setState(() => position = p);
+//     });
+//     player.durationStream.listen((d) {
+//       setState(() => duration = d);
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         appBar: AppBar(
+//           centerTitle: true,
+//           title: const Text('FLUTTER GUYS'),
+//         ),
+//         body: Padding(
+//           padding: const EdgeInsets.all(20.0),
+//           child: Column(
+//             children: [
+//               Text(formatDuration(position)),
+//               Slider(
+//                 min: 0.0,
+//                 max: duration.inSeconds.toDouble(),
+//                 value: position.inSeconds.toDouble(),
+//                 onChanged: handleSeek,
+//               ),
+//               Text(formatDuration(duration)),
+//               IconButton(
+//                 icon: Icon(player.playing ? Icons.pause : Icons.play_arrow),
+//                 onPressed: handlePlayPause,
+//               ),
+//             ],
+//           ),
+//         ));
+//   }
+// }
