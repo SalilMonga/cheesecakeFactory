@@ -36,6 +36,7 @@ class _MyAppState extends State<MyApp> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Colors.white, // This line ensures the background is white
           title: const Text("Add Task"),
           content: Row(
             children: [
@@ -77,13 +78,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _startListening() async {
-    bool available = await _speech.initialize();
+    bool available = await _speech.initialize(
+      onStatus: (status) => print('Status: $status'),
+      onError: (error) => print('Error: $error'),
+    );
+
     if (available) {
-      _speech.listen(onResult: (result) {
-        setState(() {
-          _taskController.text = result.recognizedWords;
-        });
-      });
+      _speech.listen(
+        onResult: (result) {
+          setState(() {
+            _taskController.text = result.recognizedWords;
+          });
+        },
+      );
+    } else {
+      print("Speech recognition not available");
     }
   }
 
@@ -92,7 +101,7 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Welcome To Task App!"),
+        title: const Text("Monthly Calendar"),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
