@@ -113,7 +113,7 @@ class _WelcomePageState extends State<WelcomePage>
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                'Welcome to Garage Finder',
+                                'Welcome to the Cheesecake Factory',
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium
