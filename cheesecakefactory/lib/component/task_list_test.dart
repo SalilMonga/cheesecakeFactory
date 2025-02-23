@@ -1,3 +1,4 @@
+import 'package:cheesecakefactory/main.dart';
 import 'package:cheesecakefactory/task_database.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -51,6 +52,7 @@ class _TaskListPageState extends State<TaskListPageTest> {
         // Since task.id is nullable, use a null check.
         if (task.id != null) _pendingCompletion.add(task.id!);
       });
+      showNotification();
       Future.delayed(const Duration(milliseconds: 400), () {
         setState(() {
           if (task.id != null) _pendingCompletion.remove(task.id);
