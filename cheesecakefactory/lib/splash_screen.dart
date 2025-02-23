@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cheesecakefactory/task.dart';
+import 'package:cheesecakefactory/archive/task.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
