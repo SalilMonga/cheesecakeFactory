@@ -19,7 +19,7 @@ dependencies:
   confetti: ^0.8.0
   gif: ^2.3.0
   fluttertoast: ^8.2.12
-  flutter_local_notifications: ^18.0.1
+  # flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   google_nav_bar: ^5.0.7
   audioplayers: ^5.2.1

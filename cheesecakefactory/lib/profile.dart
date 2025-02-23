@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'settings.dart'
+import 'settings.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -69,7 +69,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                   const SizedBox(height: 10),
                   _itemProfile('Phone', _phoneController, CupertinoIcons.phone),
                   const SizedBox(height: 10),
-                  _itemProfile('Address', _addressController, CupertinoIcons.location),
+                  _itemProfile(
+                      'Address', _addressController, CupertinoIcons.location),
                   const SizedBox(height: 10),
                   _itemProfile('Email', _emailController, CupertinoIcons.mail),
                 ],
@@ -83,10 +84,14 @@ class _ProfileScreenState extends State<ProfileScreen>
               onTap: () {
                 _animationController.forward(from: 0);
                 print('Settings tapped');
-                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Settings()), // Navigate to Settings page
-                );
+                Future.delayed(const Duration(milliseconds: 350), () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Settings(),
+                    ),
+                  );
+                });
               },
               child: AnimatedBuilder(
                 animation: _rotationAnimation,
@@ -158,8 +163,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                     borderSide: BorderSide.none,
                   ),
                   hintStyle: const TextStyle(color: Colors.black54),
-                  contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 15),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   filled: true,
                   fillColor: Colors.grey[200],
                 ),
