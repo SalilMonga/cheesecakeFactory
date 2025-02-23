@@ -20,7 +20,7 @@ class _SettingsState extends State<Settings> {
 
   Future<void> _playSound() async {
     try {
-      await player.play(AssetSource('assets/fan.mp3'));
+      await player.play(AssetSource('fan.mp3'));
     } catch (e) {
       print('Error playing sound: $e');
     }
