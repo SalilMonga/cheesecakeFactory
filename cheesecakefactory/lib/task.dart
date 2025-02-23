@@ -1,11 +1,13 @@
+import 'package:cheesecakefactory/splash_screen.dart';
+import 'package:cheesecakefactory/test_gif.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
 
-class task {
+class Task {
   String title;
   bool isCompleted;
 
-  task(this.title, {this.isCompleted = false});
+  Task(this.title, {this.isCompleted = false});
 }
 
 class TaskScreen extends StatefulWidget {
@@ -14,11 +16,11 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  List<task> tasks = [
-    task("Complete project tasks"),
-    task("Write report"),
-    task("Fix website bugs"),
-    task("Set goals"),
+  List<Task> tasks = [
+    Task("Complete project tasks"),
+    Task("Write report"),
+    Task("Fix website bugs"),
+    Task("Set goals"),
   ];
 
   late ConfettiController _confettiController;
@@ -36,10 +38,10 @@ class _TaskScreenState extends State<TaskScreen> {
 
     // Trigger confetti
     _confettiController.play();
-
+    const SplashScreen();
     // Show a snackbar message
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text("🎉 Task Completed! Well done! 🎉"),
         duration: Duration(seconds: 2),
       ),
@@ -55,7 +57,21 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("To-Do List")),
+      appBar: AppBar(
+        title: Text("To-Do List"),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FullScreenGifScreen()),
+              );
+            },
+            child: const Text('Show GIF'),
+          )
+        ],
+      ),
       body: Stack(
         children: [
           ListView.builder(
