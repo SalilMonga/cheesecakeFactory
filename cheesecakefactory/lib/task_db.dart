@@ -1,10 +1,10 @@
-class Task {
+class TaskDB {
   final int? id;
   final String text;
 
-  Task({this.id, required this.text});
+  TaskDB({this.id, required this.text});
 
-  factory Task.fromMap(Map<String, dynamic> json) => Task(
+  factory TaskDB.fromMap(Map<String, dynamic> json) => TaskDB(
         id: json['id'],
         text: json['text'],
       );

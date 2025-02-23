@@ -1,5 +1,6 @@
 // import 'package:cheesecakefactory/splash_screen.dart';
 import 'package:cheesecakefactory/archive/task.dart';
+import 'package:cheesecakefactory/task_database.dart';
 import 'package:cheesecakefactory/taskbutton.dart';
 import 'package:cheesecakefactory/login_page.dart';
 import 'package:cheesecakefactory/signup_page.dart';
@@ -8,7 +9,12 @@ import 'package:flutter/services.dart';
 // import 'profile.dart';
 import 'NavigationBar.dart' as customNavBar;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // For testing: reset (delete) the existing database.
+  await TaskDatabase.instance.resetDatabase();
+
   runApp(const MyApp());
 }
 
@@ -25,9 +31,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: TaskPage(),
-      // home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: const LoginPage()
       initialRoute: '/',
       routes: {
         '/': (context) => const LoginPage(),
@@ -35,7 +38,6 @@ class MyApp extends StatelessWidget {
         '/tasklist': (context) => const customNavBar.NavigationBar(),
         // '/home': (context) => const HomePage(),
       },
-      // home: Settings(),
     );
   }
 }
