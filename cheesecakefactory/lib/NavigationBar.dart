@@ -1,6 +1,7 @@
 import 'package:cheesecakefactory/FocusPage.dart';
 import 'package:cheesecakefactory/ProfilePage.dart';
 import 'package:cheesecakefactory/component/task_list_page.dart';
+import 'package:cheesecakefactory/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'CalenderPage.dart';
@@ -20,7 +21,8 @@ class _NavigationBarState extends State<NavigationBar> {
     const TaskListPage(),
     const CalenderPage(),
     const FocusPage(),
-    const ProfilePage(),
+    const ProfileScreen(),
+    // const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
