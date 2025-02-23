@@ -1,12 +1,89 @@
-// import 'package:cheesecakefactory/splash_screen.dart';
-import 'package:cheesecakefactory/task.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-// import 'profile.dart';
-import 'NavigationBar.dart' as customNavBar;
+// import 'package:flutter/material.dart';
+// import 'package:permission_handler/permission_handler.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'notifications.dart'; // Import your notifications.dart file
 
-void main() {
-  runApp(const MyApp());
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//     FlutterLocalNotificationsPlugin();
+
+// Future<void> requestNotificationPermission() async {
+//   if (await Permission.notification.isDenied) {
+//     await Permission.notification.request();
+//   }
+// }
+
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await requestNotificationPermission();
+
+//   const AndroidInitializationSettings initializationSettingsAndroid =
+//       AndroidInitializationSettings('app_icon');
+//   const InitializationSettings initializationSettings =
+//       InitializationSettings(android: initializationSettingsAndroid);
+//   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       colorScheme: ColorScheme.fromSeed(
+//           seedColor: const Color.fromARGB(255, 30, 156, 28)),
+//       useMaterial3: true,
+//       home: TaskManagerHomePage(), // Replace with your actual home page widget
+//     );
+//   }
+// }
+
+// class TaskManagerHomePage extends StatelessWidget {
+//   // Placeholder, replace with your actual home page
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Task Manager")),
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: () {
+//             NotificationService().showNotification(
+//                 3); // Example: Show notification with 3 pending tasks
+//             // You can also call NotificationService().scheduleNotification() here
+//           },
+//           child: Text("Show Notification"),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'NotificationService.dart'; // Import your notifications.dart file
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> requestNotificationPermission() async {
+  if (await Permission.notification.isDenied) {
+    await Permission.notification.request();
+  }
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await requestNotificationPermission();
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('app_icon');
+  const InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -15,66 +92,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 30, 156, 28)),
-        useMaterial3: true,
-      ),
-      home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      // home: TaskScreen(),
+      colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 30, 156, 28)),
+      useMaterial3: true,
+      home: TaskManagerHomePage(), // Replace with your actual home page widget
     );
   }
 }
 
-
-/*import 'package:cheesecakefactory/HomePage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-  ));
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class TaskManagerHomePage extends StatelessWidget {
+  // Placeholder, replace with your actual home page
   @override
   Widget build(BuildContext context) {
-    //
-
-    //
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Scaffold(
+      appBar: AppBar(title: Text("Task Manager")),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            NotificationService().showNotification(
+                3); // Example: Show notification with 3 pending tasks
+            // You can also call NotificationService().scheduleNotification() here
+          },
+          child: Text("Show Notification"),
+        ),
       ),
-      home: ProfileScreen(), // Correct: No const
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 92, 122, 16)),
-        useMaterial3: true,
-      ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: const MyHomePage (title: 'Homepage'),
     );
   }
-}*/
+}
