@@ -36,7 +36,7 @@ class _NavigationBarState extends State<NavigationBar> {
       bottomNavigationBar: GNav(
         backgroundColor: Colors.white,
         color: Colors.black, // Default icon color
-        activeColor: Colors.green, // Color when selected
+        //activeColor: Colors.green, // Color when selected
         tabBackgroundColor: const Color.fromARGB(255, 231, 235, 225), // Background of selected tab
         gap: 8,
         selectedIndex: _selectedIndex, // Track the selected index
@@ -44,19 +44,23 @@ class _NavigationBarState extends State<NavigationBar> {
         tabs: const [
           GButton(
             icon: Icons.home,
-            text: 'Home',
+            text : 'Home',
+            iconActiveColor: Colors.green,
           ),
           GButton(
             icon: Icons.dashboard_sharp,
             text: 'Calendar',
+            iconActiveColor: Color.fromARGB(198, 130, 209, 202),
           ),
           GButton(
             icon: Icons.album,
             text: 'Focus',
+            iconActiveColor: Colors.blueGrey,
           ),
           GButton(
             icon: Icons.account_circle,
             text: 'Profile',
+            iconActiveColor: Colors.white,
           ),
         ],
       ),

@@ -9,6 +9,7 @@ class FocusPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Focus'),
+        backgroundColor: Colors.blueGrey,
       ),
       body: const Center(
         child: Text('Welcome to the Focus Page!'),
