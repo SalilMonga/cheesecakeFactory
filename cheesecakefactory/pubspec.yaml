@@ -24,11 +24,14 @@ dependencies:
   confetti: ^0.8.0
   gif: ^2.3.0
   fluttertoast: ^8.2.12
-  flutter_local_notifications: ^18.0.1
+  # flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   google_nav_bar: ^5.0.7
   gap: ^3.0.1
   audioplayers: ^5.2.1
+  flutter_secure_storage: ^9.2.4
+  provider: ^6.1.2
+  crypto: ^3.0.6
 
 dev_dependencies:
   flutter_test:

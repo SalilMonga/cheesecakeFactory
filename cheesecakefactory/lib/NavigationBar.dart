@@ -1,5 +1,4 @@
 import 'package:cheesecakefactory/FocusPage.dart';
-import 'package:cheesecakefactory/ProfilePage.dart';
 import 'package:cheesecakefactory/component/task_list_page.dart';
 import 'package:cheesecakefactory/profile.dart';
 import 'package:flutter/material.dart';
