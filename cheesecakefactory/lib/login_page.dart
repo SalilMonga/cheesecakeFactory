@@ -67,87 +67,87 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0, // Remove shadow
         flexibleSpace: Center(
           child: Image.asset(
-            'assets/logo.png', // Make sure the path is correct
+            'assets/cheesecake.png', // Make sure the path is correct
             height: 100, // Adjust height as needed
             width: 100, // Adjust width as needed
             fit: BoxFit.contain, // Ensure the logo fits properly
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: screenHeight - MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomTextField(
-                    controller: _usernameController,
-                    labelText: 'Username',
-                    hintText: 'Enter your username',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your username';
-                      }
-                      return null;
-                    },
-                  ),
-                  CustomTextField(
-                    controller: _passwordController,
-                    labelText: 'Password',
-                    hintText: 'Enter your password',
-                    obscureText: true,
-                    showSuffixIcon: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      if (value.length < 8) {
-                        return 'Password must be at least 8 characters long';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PrimaryButton(
-                        text: 'Sign Up',
-                        isOutlined: true,
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/signup');
-                        },
-                      ),
-                      PrimaryButton(
-                        text: 'Login',
-                        onPressed: _validateAndLogin,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  const Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 24,
-                        backgroundColor: Colors.white,
-                      ),
-                      SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          
-                         
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
+      body: Center( // Center the content vertically
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: screenHeight - MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // Ensure the column is as small as needed
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomTextField(
+                      controller: _usernameController,
+                      labelText: 'Username',
+                      hintText: 'Enter your username',
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your username';
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomTextField(
+                      controller: _passwordController,
+                      labelText: 'Password',
+                      hintText: 'Enter your password',
+                      obscureText: true,
+                      showSuffixIcon: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PrimaryButton(
+                          text: 'Sign Up',
+                          isOutlined: true,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/signup');
+                          },
+                        ),
+                        PrimaryButton(
+                          text: 'Login',
+                          onPressed: _validateAndLogin,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    const Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 24,
+                          backgroundColor: Colors.white,
+                        ),
+                        SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
