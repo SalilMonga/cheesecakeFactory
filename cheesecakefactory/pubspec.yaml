@@ -13,8 +13,16 @@ dependencies:
     sdk: flutter
   vibration: ^3.1.3
 
-  cupertino_icons: ^1.0.2
-  audioplayers: ^5.2.1 # Latest stable version at this time
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  confetti: ^0.8.0
+  gif: ^2.3.0
+  fluttertoast: ^8.2.12
+  flutter_local_notifications: ^18.0.1
+  timezone: ^0.10.0
+  google_nav_bar: ^5.0.7
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -23,6 +31,12 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 flutter:
-  uses-material-design: true
   assets:
-    - assets/fan.mp3 #Ensure your mp3 file is in this location.
+    - assets/tasks.json
+    - assets/images/
+    - assets/cat.gif
+    - assets/fan.mp3
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
