@@ -53,6 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: Colors.white, // Set background color to white
       appBar: AppBar(
         title: const Text('Sign Up'),
         elevation: 0,
