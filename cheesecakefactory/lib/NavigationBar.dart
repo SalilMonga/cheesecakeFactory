@@ -1,9 +1,76 @@
+
 import 'package:cheesecakefactory/FocusPage.dart';
 import 'package:cheesecakefactory/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-
+import 'CalenderPage.dart';
 import 'HomePage.dart';
+
+class NavigationBar extends StatefulWidget {
+  const NavigationBar({super.key});
+
+  @override
+  State<NavigationBar> createState() => _NavigationBarState();
+}
+
+class _NavigationBarState extends State<NavigationBar> {
+  int _selectedIndex = 0; // Track selected tab index
+
+  final List<Widget> _pages = [
+    MyHomePage(title: 'Home'),
+    CalenderPage(),
+    FocusPage(),
+    ProfilePage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_selectedIndex], // Display the selected page
+      bottomNavigationBar: GNav(
+        backgroundColor: Colors.white,
+        color: Colors.black, // Default icon color
+        activeColor: Colors.green, // Color when selected
+        tabBackgroundColor: const Color.fromARGB(255, 231, 235, 225), // Background of selected tab
+        gap: 8,
+        selectedIndex: _selectedIndex, // Track the selected index
+        onTabChange: _onItemTapped,
+        tabs: const [
+          GButton(
+            icon: Icons.home,
+            text: 'Home',
+          ),
+          GButton(
+            icon: Icons.dashboard_sharp,
+            text: 'Calendar',
+          ),
+          GButton(
+            icon: Icons.album,
+            text: 'Focus',
+          ),
+          GButton(
+            icon: Icons.account_circle,
+            text: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+/*import 'package:cheesecakefactory/FocusPage.dart';
+import 'package:cheesecakefactory/ProfilePage.dart';
+import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+
+//import 'HomePage.dart';
 import 'CalenderPage.dart';
 
 class NavigationBar extends StatefulWidget {
@@ -20,10 +87,10 @@ class _NavigationBarState extends State<NavigationBar> {
   @override
   Widget build(BuildContext context) {
     return GNav(
-      backgroundColor: Colors.black,
-      color: Colors.white, // Default icon color
-      activeColor: Colors.blue, // Color when selected
-      tabBackgroundColor: Colors.grey.shade800, // Background of selected tab
+      backgroundColor: Colors.white,
+      color: Colors.black, // Default icon color
+      activeColor: Colors.green, // Color when selected
+      tabBackgroundColor: const Color.fromARGB(255, 231, 235, 225), // Background of selected tab
       gap: 8,
       selectedIndex: _selectedIndex, // Track the selected index
       onTabChange: (index) {
@@ -37,10 +104,10 @@ class _NavigationBarState extends State<NavigationBar> {
           icon: Icons.home,
           text: 'Home',
             onPressed: () {
-            Navigator.push(
+            /*Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const MyHomePage(title: 'Hii',)),
-            );
+            );*/
             },          
         ),
         GButton(
@@ -76,4 +143,4 @@ class _NavigationBarState extends State<NavigationBar> {
       ],
     );
   }
-}
+}*/
