@@ -1,43 +1,19 @@
+// import 'package:cheesecakefactory/splash_screen.dart';
 import 'package:cheesecakefactory/archive/task.dart';
 import 'package:cheesecakefactory/task_database.dart';
 import 'package:cheesecakefactory/taskbutton.dart';
 import 'package:cheesecakefactory/login_page.dart';
 import 'package:cheesecakefactory/signup_page.dart';
-// import 'package:cheesecakefactory/splash_screen.dart';
-// import 'package:cheesecakefactory/task.dart';
-import 'package:cheesecakefactory/toastTest.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
-// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 // import 'profile.dart';
-// import 'NavigationBar.dart' as customNavBar;
+import 'NavigationBar.dart' as customNavBar;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 30, 156, 28)),
-        useMaterial3: true,
-      ),
-      // home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const LoginPage(),
-        '/signup': (context) => const SignUpPage(),
-        '/tasklist': (context) => const customNavBar.NavigationBar(),
-        // '/home': (context) => const HomePage(),
-      },
-    );
-  }
-}
 Future<void> requestNotificationPermission() async {
   if (await Permission.notification.isDenied) {
     // Request the permission
@@ -58,11 +34,9 @@ Future<void> main() async {
   );
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  WidgetsFlutterBinding.ensureInitialized();
-
   // For testing: reset (delete) the existing database.
   await TaskDatabase.instance.resetDatabase();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Future<void> showNotification() async {
@@ -87,4 +61,28 @@ Future<void> showNotification() async {
     platformChannelSpecifics,
     payload: 'task_payload', // Optional payload
   );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 30, 156, 28)),
+        useMaterial3: true,
+      ),
+      // home: const customNavBar.NavigationBar(), // Set the home to NavigationBar
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginPage(),
+        '/signup': (context) => const SignUpPage(),
+        '/tasklist': (context) => const customNavBar.NavigationBar(),
+        // '/home': (context) => const HomePage(),
+      },
+    );
+  }
 }
